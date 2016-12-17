@@ -33,8 +33,8 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
       </span>
       |
       <span>
-        <a [routerLink]=" ['./detail'] ">
-          Detail
+        <a [routerLink]=" ['./trip'] ">
+          Trip
         </a>
       </span>
       |

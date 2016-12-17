@@ -27,11 +27,9 @@
 
 import { Component, ViewContainerRef, ElementRef } from '@angular/core';
 
-import { AppState } from '../app.service';
 
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Comment } from '../model/comment';
 import { Observable } from 'rxjs/Rx';
 
 
@@ -43,7 +41,7 @@ import * as _ from 'lodash';
 
 import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
-import {EviService} from '../../shared/services/evi.service';
+import {EviService} from '../../../shared/services/evi.service';
 
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');

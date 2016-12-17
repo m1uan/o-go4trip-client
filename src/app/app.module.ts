@@ -22,7 +22,8 @@ import { NoContentComponent } from './no-content';
 import { XLarge } from './home/x-large';
 
 import {LoginComponent} from './login/components/login/';
-import {PlaceComponent} from './place/components/place/';
+import {PlaceComponent} from './trip/components/place/';
+import {TripComponent} from './trip/components/trip/';
 
 
 import { ModalModule } from 'angular2-modal';
@@ -57,6 +58,7 @@ type StoreType = {
     AboutComponent,
     HomeComponent,
     PlaceComponent,
+    TripComponent,
     ...INVOICE_COMPONENTS,
     AccountComponent,
     NoContentComponent,
