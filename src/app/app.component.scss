@@ -1,0 +1,11 @@
+//@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~foundation-sites/dist/css/foundation";
+
+html, body{
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif
+}
+
+span.active {
+  background-color: gray;
+}

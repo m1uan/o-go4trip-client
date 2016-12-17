@@ -1,0 +1,11 @@
+
+<div id="login-center-block">
+    <h4>Login</h4>
+    <div class="form" >
+        <input type="text" [(ngModel)]="email" >
+        <input type="password"  [(ngModel)]="password">
+    </div>
+    <button class="button success" (click)="onLogin()">Login</button> or 
+    <button class="button blue" (click)="onFacebook()">Facebook</button>
+    <a href="#">Register as new user</a>
+</div>

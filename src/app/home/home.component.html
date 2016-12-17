@@ -1,0 +1,82 @@
+<div class="card-container">
+  <h1 x-large class="sample-content">Your Content Here</h1>
+<ul class="dropdown menu" data-dropdown-menu>
+  <li>
+    <a href="#ahoj">Item 1</a>
+    <ul class="menu">
+      <li><a href="#ahoj">Item 1A</a></li>
+      <!-- ... -->
+    </ul>
+  </li>
+  <li><a href="#" (click)="test()">test()</a></li>
+  <li><a href="#" [routerLink]="['./about']">about</a></li>
+  <li><a href="#">Item 4</a></li>
+</ul>
+  <div>
+    For material design components use the <a href="https://github.com/AngularClass/angular2-webpack-starter/tree/material2"><b>material2</b></a> branch
+  </div>
+
+  <hr>
+<div class="small-10 columns">
+  <div class="slider" data-slider data-initial-start="50">
+    <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput1"></span>
+    <span class="slider-fill" data-slider-fill></span>
+  </div>
+</div>
+<div class="small-2 columns">
+  <input type="number" id="sliderOutput1">
+</div>
+  <div>
+    For hot module reloading run
+    <pre>npm run start:hmr</pre>
+  </div>
+
+  <hr>
+
+  <div>
+    <h4>Local State</h4>
+
+    <form (ngSubmit)="submitState(localState.value)" autocomplete="off">
+
+      <input
+        [value]="localState.value"
+        (input)="localState.value = $event.target.value"
+        placeholder="Submit Local State to App State"
+        autofocus>
+
+      <button type="button" class="success button">Submit Value</button>
+    </form>
+    <!--
+        <input type="text" [value]="localState.value" (input)="localState.value = $event.target.value" autofocus>
+        Rather than wiring up two-way data-binding ourselves with [value] and (input)
+        we can use Angular's [(ngModel)] syntax
+        <input type="text" name="textInput" [(ngModel)]="localState.value" autofocus>
+      -->
+
+    <pre>this.localState = {{ localState | json }}</pre>
+
+  </div>
+
+  <p><a data-open="exampleModal2">Click me for a modal</a></p>
+
+<!-- This is the first modal -->
+<div class="reveal" id="exampleModal2" data-reveal>
+  <h1>Awesome!</h1>
+  <p class="lead">I have another modal inside of me!</p>
+  <a class="button" data-open="exampleModal3">Click me for another modal!</a>
+  <button class="close-button" data-close aria-label="Close reveal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<p><a data-open="exampleModal3">Click me for a modal</a></p>
+
+<!-- This is the nested modal -->
+<div class="reveal" id="exampleModal3" data-reveal>
+  <h2>ANOTHER MODAL!!!</h2>
+  <button class="close-button" data-close aria-label="Close reveal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+</div>

@@ -1,0 +1,15 @@
+<div class="form-group">
+  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"  [formControl]="searchControl" #searchGoogle>
+</div>
+
+
+<input [(ngModel)]="search" />
+<button class="blue button" (click)="onSearch()" >Search</button>
+
+<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+  <sebm-google-map-marker [latitude]="lat" [longitude]="lng" ></sebm-google-map-marker>
+</sebm-google-map>
+
+<p>
+    This is blank version of 'Place' -> place/component/place
+</p>
