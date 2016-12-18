@@ -28,6 +28,7 @@
 import { Component, ViewContainerRef, ElementRef } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { ResizeEvent } from 'angular-resizable-element';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
@@ -41,7 +42,7 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {EviService} from '../../../shared/services/evi.service';
 
-import {ResizeEvent} from 'angular-resizable-element';
+
 
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
@@ -136,23 +137,7 @@ export class TripComponent {
     console.log(args);
   }
   
-  
-  validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX: number = 50;
-    if (event.rectangle.width < MIN_DIMENSIONS_PX || event.rectangle.height < MIN_DIMENSIONS_PX) {
-      return false;
-    }
-    return true;
-  }
 
-  onResizeEnd(event: ResizeEvent): void {
-    this.style = {
-      position: 'fixed',
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`
-    };
 }
 
 }

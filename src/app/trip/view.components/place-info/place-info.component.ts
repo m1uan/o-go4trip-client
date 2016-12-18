@@ -18,6 +18,7 @@ import { Component, ViewContainerRef, ElementRef, Input, Output } from '@angular
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ResizeEvent } from 'angular-resizable-element';
 
 import * as numeral from 'numeral';
 import * as moment from 'moment';
@@ -50,6 +51,8 @@ export class PlaceInfoViewComponent {
   
   //public fromPlace : any;
   public toPlace : any;
+
+  public style: Object = {};
   
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
@@ -77,8 +80,22 @@ export class PlaceInfoViewComponent {
     console.log(this.index, this.place, this.places);
   }
   
-  public onResizeEnd(event: any): void {
-    console.log('Element was resized', event);
+  validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+    if (event.rectangle.width < MIN_DIMENSIONS_PX || event.rectangle.height < MIN_DIMENSIONS_PX) {
+      return false;
+    }
+    return true;
+  }
+
+  onResizing(event: ResizeEvent): void {
+    this.style = {
+      
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
   }
 
 }

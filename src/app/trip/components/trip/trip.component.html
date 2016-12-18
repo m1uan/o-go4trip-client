@@ -1,18 +1,3 @@
-<div
-        class="rectangle"
-        [ngStyle]="style"
-        mwlResizable
-        [validateResize]="validate"
-        [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
-        [enableGhostResize]="true"
-        [resizeSnapGrid]="{left: 50, right: 50}"
-        (resizeEnd)="onResizeEnd($event)">
-        <img
-          src="http://i.imgur.com/eqzz2dl.gif"
-          class="resize-handle"
-          mwlResizeHandle
-          [resizeEdges]="{bottom: true, right: true}">
-      </div>
 
 <div class="timeline">
     <g4t-trip-timeline></g4t-trip-timeline>

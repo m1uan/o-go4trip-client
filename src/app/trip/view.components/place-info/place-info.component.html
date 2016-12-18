@@ -1,8 +1,12 @@
-<div class="main-place-info ">
-    <div mwlResizable
-      [enableGhostResize]="true"
-      [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
-      (resizeEnd)="onResizeEnd($event)">
+<div >
+    <div
+    class="main-place-info "
+      [ngStyle]="style"
+        mwlResizable
+        [validateResize]="validate"
+        [resizeEdges]="{bottom: true}"
+        [enableGhostResize]="false"
+        (resizing)="onResizing($event)">
         <h1>{{place?.name}}</h1>
     </div>
     
