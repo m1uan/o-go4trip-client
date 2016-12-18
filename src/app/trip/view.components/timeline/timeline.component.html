@@ -1,0 +1,22 @@
+
+
+
+<div *ngFor="let day of days;let idx = index;" class="no-margin-no-padding">
+    <table>
+        <tr>
+            <td class="day-info">
+                <div class="day-info">
+                    <h6>Day {{idx+1}}</h6>
+                </div>
+            </td>
+            <td>
+                <div>
+                     <div *ngFor="let hour of hours;let hidx = index;" class="day" [ngClass]="{'evening' : hidx < 6 || hidx > 18}">
+                        {{hour}}
+                    </div>
+                </div>
+            </td>
+       </tr>
+    </table>
+    
+</div>

@@ -24,7 +24,9 @@ import { XLarge } from './home/x-large';
 import {LoginComponent} from './login/components/login/';
 import {PlaceComponent} from './trip/components/place/';
 import {TripComponent} from './trip/components/trip/';
-
+import {TimelineViewComponent} from './trip/view.components/timeline/';
+import {MoveInfoViewComponent} from './trip/view.components/move-info/';
+import {PlaceInfoViewComponent} from './trip/view.components/place-info/';
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
@@ -35,6 +37,14 @@ import {SharedModule} from './shared/';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { GMapsService } from './shared/services/gmaps.service';
+
+
+const PLACE_VIEWS = [
+  TimelineViewComponent,
+  MoveInfoViewComponent,
+  PlaceInfoViewComponent
+]
+
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -59,6 +69,7 @@ type StoreType = {
     HomeComponent,
     PlaceComponent,
     TripComponent,
+    ...PLACE_VIEWS,
     ...INVOICE_COMPONENTS,
     AccountComponent,
     NoContentComponent,
