@@ -3,12 +3,11 @@
 <div class="timeline">
     <g4t-trip-timeline></g4t-trip-timeline>
 </div>
-<div class="places">
-    <g4t-place-info-view></g4t-place-info-view>
-    <g4t-move-info-view></g4t-move-info-view>
-    <g4t-place-info-view></g4t-place-info-view>
-    <g4t-move-info-view></g4t-move-info-view>
-    <g4t-place-info-view></g4t-place-info-view>
+
+<div id="places" class="places" [dragulaModel]="places" [dragula]='"another-bag"'>
+    <div *ngFor="let place of places;let idx = index">
+        <g4t-place-info-view  [place]="place" [places]="places" [index]="idx"></g4t-place-info-view>
+    </div>
 </div>
 <div class="clearfix">
 </div>

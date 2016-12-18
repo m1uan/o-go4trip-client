@@ -39,6 +39,10 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import { GMapsService } from './shared/services/gmaps.service';
 
 
+import {DragulaModule} from 'ng2-dragula';
+
+// https://maps.googleapis.com/maps/api/staticmap?size=1400x1400&path=weight:3|color:orange|enc:polyline_data&key=AIzaSyD7SD0fOQEgd2o7M0TNBz7bs2UMbEJLJ3g
+
 const PLACE_VIEWS = [
   TimelineViewComponent,
   MoveInfoViewComponent,
@@ -92,6 +96,7 @@ type StoreType = {
     BootstrapModalModule,
     //wjNg2Grid,
     Ng2BootstrapModule,
+    DragulaModule,
     
     SharedModule,
     

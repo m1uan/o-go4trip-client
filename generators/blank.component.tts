@@ -14,7 +14,7 @@
 // import { {{ name|title }} } from './{{ location }}';
 //
 
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, Input, Output } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute, Params } from '@angular/router';

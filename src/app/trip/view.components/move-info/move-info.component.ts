@@ -14,7 +14,7 @@
 // import { Move-info } from './trip/components.view/move-info/move-info';
 //
 
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, Input, Output } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -34,15 +34,17 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
   // for `document.querySelectorAll(selector)` in our index.html
   // where, in this case, selector is the string 'home'
   selector: 'g4t-move-info-view',  // <home></home>
-  // We need to tell Angular's Dependency Injection which providers are in our app.
-  providers: [
-  ],
-   styleUrls: [ './move-info.component.scss' ],
+  
+  styleUrls: [ './move-info.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './move-info.component.html'
 })
 export class MoveInfoViewComponent {
  
+  @Input('toPlace') toPlace : any;
+  @Input('fromPlace') fromPlace : any;
+  @Input('places') places: Array<any>;
+  
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
       
@@ -53,7 +55,13 @@ export class MoveInfoViewComponent {
   }
 
   public ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
+    //$(this._el.nativeElement.ownerDocument).foundation();
   }
+  
+  public ngOnChanges(changes: any){
+    console.log('ngOnChanges', this.place, this.places);
+  }
+  
+
 
 }

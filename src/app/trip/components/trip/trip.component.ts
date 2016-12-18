@@ -26,14 +26,12 @@
 
 
 import { Component, ViewContainerRef, ElementRef } from '@angular/core';
-
-
-
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import { DragulaService, dragula } from 'ng2-dragula';
 
 import * as numeral from 'numeral';
 import * as moment from 'moment';
@@ -45,6 +43,12 @@ import {EviService} from '../../../shared/services/evi.service';
 
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
+
+interface PlaceInfo {
+  places : Array<any>;
+  current : any;
+  index : number;
+}
 
 @Component({
   // The selector is what angular internally uses
@@ -59,32 +63,69 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
   templateUrl: './trip.component.html'
 })
 export class TripComponent {
-  // Set our default values
-    localState = { value: '' };
-
-  data : ['1', '20', '300'];
-    reshello = '';
+  
+  public places = [
+    {name: 'Zlin'},
+    {name: 'Brno'},
+    {name: 'Praha'}
+  ]
+  
+  placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
+    
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
-      
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService ) {
+    
+    // http://valor-software.com/ng2-dragula/index.html
+    
+    
+    _dragulaService.dropModel.subscribe((value) => {
+      this.onDropModel(value.slice(1));
+    });
+    
+    _dragulaService.removeModel.subscribe((value) => {
+      this.onRemoveModel(value.slice(1));
+    });
+    
+    _dragulaService.drag.subscribe((value) => {
+      //this.onDrag(value.slice(1));
+    });
+    _dragulaService.drop.subscribe((value) => {
+      //this.onDrop(value.slice(1));
+    });
+    _dragulaService.over.subscribe((value) => {
+      //this.onOver(value.slice(1));
+    });
+    _dragulaService.out.subscribe((value) => {
+      //this.onOut(value.slice(1));
+    });
   }
 
-  ngOnInit() {
-
-    let loda = _.chunk(['a', 'b', 'c', 'd'], 2);
-
-    let numer = numeral(100);
-      console.log('hello `Home` component', numer.format('0.2'), loda);
-
-      var mom = moment().format('MMMM Do YYYY, h:mm:ss a'); 
-
-      //console.log('ahoj', APISERVER, mom);
-    // this.title.getData().subscribe(data => this.data = data);
+  public ngOnInit() {
+    this.places.forEach((place, index)=>{
+       let placeInfo = {} as PlaceInfo;
+       placeInfo.places = this.places;
+       placeInfo.index = index;
+       placeInfo.current = place;
+       
+       this.placeInfos.push(placeInfo);
+    })
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit() {
     $(this._el.nativeElement.ownerDocument).foundation();
-    //console.log('$(this._el.nativeElement.ownerDocument).foundation()');
+  }
+  
+    
+  private onDropModel(args) {
+    let [el, target, source] = args;
+    // do something else
+    console.log(args, this.places);
+  }
+
+  private onRemoveModel(args) {
+    let [el, source] = args;
+    // do something else
+    console.log(args);
   }
 
 }

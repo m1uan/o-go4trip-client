@@ -14,7 +14,7 @@
 // import { Place-info } from './trip/components.view/place-info/place-info';
 //
 
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, Input, Output } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -42,7 +42,15 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
   templateUrl: './place-info.component.html'
 })
 export class PlaceInfoViewComponent {
- 
+  
+  @Input('place') place : any;
+  @Input('places') places: Array<any>;
+  @Input('index') index : number;
+  
+  
+  //public fromPlace : any;
+  public toPlace : any;
+  
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
       
@@ -53,7 +61,20 @@ export class PlaceInfoViewComponent {
   }
 
   public ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
+    //$(this._el.nativeElement.ownerDocument).foundation();
+  }
+  
+  public ngOnChanges(changes: any){
+    let toIndex = this.index+1;
+    if(toIndex == this.places.length){
+      // this is last one
+      toIndex = 0;
+    }
+    
+    //this.fromPlace = this.place;
+    this.toPlace = this.places[toIndex];
+    
+    console.log(this.index, this.place, this.places);
   }
 
 }
