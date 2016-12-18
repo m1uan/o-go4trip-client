@@ -41,6 +41,8 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {EviService} from '../../../shared/services/evi.service';
 
+import {ResizeEvent} from 'angular-resizable-element';
+
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
@@ -70,6 +72,8 @@ export class TripComponent {
     {name: 'Praha'}
   ]
   
+  public style: Object = {};
+   
   placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
     
   // TypeScript public modifiers
@@ -77,7 +81,11 @@ export class TripComponent {
     
     // http://valor-software.com/ng2-dragula/index.html
     
-    
+    // _dragulaService.setOptions('bag', {
+    //     moves: function (el, container, handle) {
+    //       return handle.className === 'handle';
+    //     }
+    // });
     _dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -127,5 +135,24 @@ export class TripComponent {
     // do something else
     console.log(args);
   }
+  
+  
+  validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+    if (event.rectangle.width < MIN_DIMENSIONS_PX || event.rectangle.height < MIN_DIMENSIONS_PX) {
+      return false;
+    }
+    return true;
+  }
+
+  onResizeEnd(event: ResizeEvent): void {
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+}
 
 }

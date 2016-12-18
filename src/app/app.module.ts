@@ -5,6 +5,10 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
+
+import {DragulaModule} from 'ng2-dragula';
+import {ResizableModule} from 'angular-resizable-element';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -39,7 +43,6 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import { GMapsService } from './shared/services/gmaps.service';
 
 
-import {DragulaModule} from 'ng2-dragula';
 
 // https://maps.googleapis.com/maps/api/staticmap?size=1400x1400&path=weight:3|color:orange|enc:polyline_data&key=AIzaSyD7SD0fOQEgd2o7M0TNBz7bs2UMbEJLJ3g
 
@@ -97,7 +100,7 @@ type StoreType = {
     //wjNg2Grid,
     Ng2BootstrapModule,
     DragulaModule,
-    
+    ResizableModule,
     SharedModule,
     
   ],

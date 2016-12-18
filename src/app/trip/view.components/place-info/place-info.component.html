@@ -1,6 +1,11 @@
 <div class="main-place-info ">
-    <h1>{{place?.name}}</h1>
+    <div mwlResizable
+      [enableGhostResize]="true"
+      [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
+      (resizeEnd)="onResizeEnd($event)">
+        <h1>{{place?.name}}</h1>
+    </div>
     
-    <g4t-move-info-view [places]="places" [toPlace]="toPlace" [fromPlace]="place"></g4t-move-info-view>
 </div>
+<g4t-move-info-view [places]="places" [toPlace]="toPlace" [fromPlace]="place"></g4t-move-info-view>
 

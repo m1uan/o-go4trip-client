@@ -73,6 +73,7 @@
     "@angularclass/conventions-loader": "^1.0.2",
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "~3.0.2",
+    "angular-resizable-element": "^0.5.4",
     "angular2-google-maps": "^0.16.0",
     "angular2-modal": "^2.0.2",
     "assets-webpack-plugin": "^3.4.0",

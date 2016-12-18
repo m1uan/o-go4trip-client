@@ -1,11 +1,27 @@
-
+<div
+        class="rectangle"
+        [ngStyle]="style"
+        mwlResizable
+        [validateResize]="validate"
+        [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
+        [enableGhostResize]="true"
+        [resizeSnapGrid]="{left: 50, right: 50}"
+        (resizeEnd)="onResizeEnd($event)">
+        <img
+          src="http://i.imgur.com/eqzz2dl.gif"
+          class="resize-handle"
+          mwlResizeHandle
+          [resizeEdges]="{bottom: true, right: true}">
+      </div>
 
 <div class="timeline">
     <g4t-trip-timeline></g4t-trip-timeline>
 </div>
 
-<div id="places" class="places" [dragulaModel]="places" [dragula]='"another-bag"'>
+<!--<div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"'>-->
+    <div id="places" class="places">
     <div *ngFor="let place of places;let idx = index">
+        <div class="handle">M</div>
         <g4t-place-info-view  [place]="place" [places]="places" [index]="idx"></g4t-place-info-view>
     </div>
 </div>

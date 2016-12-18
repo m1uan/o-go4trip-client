@@ -76,5 +76,9 @@ export class PlaceInfoViewComponent {
     
     console.log(this.index, this.place, this.places);
   }
+  
+  public onResizeEnd(event: any): void {
+    console.log('Element was resized', event);
+  }
 
 }
