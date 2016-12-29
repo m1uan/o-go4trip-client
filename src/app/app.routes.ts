@@ -20,6 +20,7 @@ export const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'place', component: PlaceComponent},
   {path: 'trip', component: TripComponent},
+  {path: 'trip/:id/alternative/:uuid', component: TripComponent},
   {
     path: 'detail', loadChildren: () => System.import('./+detail')
       .then((comp: any) => comp.default),

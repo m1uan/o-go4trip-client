@@ -42,7 +42,7 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {EviService} from '../../../shared/services/evi.service';
 
-
+import {TripService} from '../../services/trip.services'
 
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
@@ -66,27 +66,33 @@ interface PlaceInfo {
   templateUrl: './trip.component.html'
 })
 export class TripComponent {
-  
-  public places = [
-    {name: 'Zlin'},
-    {name: 'Brno'},
-    {name: 'Praha'}
-  ]
+  private BAG = false;
+
+  public places = [];
   
   public style: Object = {};
    
   placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
     
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService ) {
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, private _tripService : TripService ) {
     
+   
+    // https://github.com/valor-software/ng2-dragula/issues/442
+    this.BAG  = this._dragulaService.find('bag');
+    if (this.BAG !== undefined ) {
+      this._dragulaService.destroy('bag');
+    }
+
     // http://valor-software.com/ng2-dragula/index.html
+    this._dragulaService.setOptions('bag', {
+      moves: function (el, container, handle) {
+        return handle.className === 'handle';
+      }
+    });
+
     
-    // _dragulaService.setOptions('bag', {
-    //     moves: function (el, container, handle) {
-    //       return handle.className === 'handle';
-    //     }
-    // });
+
     _dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -110,15 +116,32 @@ export class TripComponent {
   }
 
   public ngOnInit() {
-    this.places.forEach((place, index)=>{
-       let placeInfo = {} as PlaceInfo;
-       placeInfo.places = this.places;
-       placeInfo.index = index;
-       placeInfo.current = place;
-       
-       this.placeInfos.push(placeInfo);
-    })
+
+    
+
+    
+
+     const sub = this.route.params.subscribe(params => {
+       const id = params['id'];
+       const uuid = params['uuid'];
+        // could happend the visitor of this page
+        // is comming with empty id -> show just search box
+        if(id && uuid){
+            this.load(id, uuid);
+        }
+     });
+
+
+    
   }
+
+  public load(id, uuid){
+    console.log(id, uuid);
+    this._tripService.loadTrip(id, uuid, (data)=>{
+      this.places = data.places;
+    });
+  }
+
 
   public ngAfterViewInit() {
     $(this._el.nativeElement.ownerDocument).foundation();
@@ -140,4 +163,3 @@ export class TripComponent {
 
 }
 
-}

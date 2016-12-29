@@ -49,12 +49,15 @@ import {GMapsService} from '../../../shared/services/gmaps.service';
 import { FormControl } from "@angular/forms";
 import { MapsAPILoader } from 'angular2-google-maps/core';
 
+import {TripService} from '../../services/trip.services'
+
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
 declare var google: any;
 
 let data = {
+  // lat lng
   // 49.22297320000001 17.85482120000006 - vizovice
   // 49.2244365 17.662763499999983 - zlin
   // 49.33892509999999 17.99385230000007 - vsetin
@@ -89,13 +92,17 @@ export class PlaceComponent {
   // TypeScript public modifiers
   constructor(private evi : EviService, 
                 private route : ActivatedRoute, 
+                private router : Router,
                 private _el: ElementRef , 
                 private _gmaps : GMapsService,
-                private mapsAPILoader: MapsAPILoader) {
+                private mapsAPILoader: MapsAPILoader,
+                private _tripService: TripService) {
       
   }
 
   ngOnInit() {
+
+
 
     //create search FormControl
     this.searchControl = new FormControl();
@@ -114,6 +121,10 @@ export class PlaceComponent {
         this.lng = place.geometry.location.lng();
 
         console.log(this.lat, this.lng);
+
+        this._tripService.createTrip(this.lat, this.lng, place.name, (data)=>{
+            this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
+        })
       });
     });
 

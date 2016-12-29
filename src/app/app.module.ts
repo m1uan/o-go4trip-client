@@ -42,6 +42,7 @@ import {SharedModule} from './shared/';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { GMapsService } from './shared/services/gmaps.service';
 
+import {TripService} from './trip/services/trip.services'
 
 
 // https://maps.googleapis.com/maps/api/staticmap?size=1400x1400&path=weight:3|color:orange|enc:polyline_data&key=AIzaSyD7SD0fOQEgd2o7M0TNBz7bs2UMbEJLJ3g
@@ -108,6 +109,7 @@ type StoreType = {
     ENV_PROVIDERS,
     APP_PROVIDERS,
     GMapsService,
+    TripService
   ]
 })
 export class AppModule {

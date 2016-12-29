@@ -3,8 +3,8 @@
     <g4t-trip-timeline></g4t-trip-timeline>
 </div>
 
-<!--<div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"'>-->
-    <div id="places" class="places">
+<div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
+    <!--<div id="places" class="places">-->
     <div *ngFor="let place of places;let idx = index">
         <div class="handle">M</div>
         <g4t-place-info-view  [place]="place" [places]="places" [index]="idx"></g4t-place-info-view>
