@@ -86,6 +86,9 @@ export class PlaceComponent {
   public lng : number;
   public zoom : number = 4;
 
+  public id;
+  public uuid;
+
   @ViewChild("searchGoogle") public searchElementRef: ElementRef;
   public searchControl: FormControl;
 
@@ -102,7 +105,15 @@ export class PlaceComponent {
 
   ngOnInit() {
 
-
+    const sub = this.route.params.subscribe(params => {
+       this.id = params['id'];
+       this.uuid = params['uuid'];
+        // could happend the visitor of this page
+        // is comming with empty id -> show just search box
+        if(this.id && this.uuid){
+            
+        }
+     });
 
     //create search FormControl
     this.searchControl = new FormControl();
@@ -122,9 +133,18 @@ export class PlaceComponent {
 
         console.log(this.lat, this.lng);
 
-        this._tripService.createTrip(this.lat, this.lng, place.name, (data)=>{
+        if(this.id && this.uuid){
+
+          this._tripService.addPlaceToAlternative(this.lat, this.lng, place.name, this.uuid, (data)=>{
+            this.router.navigate(['/trip', this.id, 'alternative', this.uuid ]);
+          });
+
+        } else {
+          this._tripService.createTrip(this.lat, this.lng, place.name, (data)=>{
             this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
-        })
+          })
+        }
+        
       });
     });
 

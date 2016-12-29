@@ -27,8 +27,8 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
       </span>
       |
       <span>
-        <a [routerLink]=" ['./home'] ">
-          Home
+        <a [routerLink]=" ['./trips'] ">
+          Trips
         </a>
       </span>
       |

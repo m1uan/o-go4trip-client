@@ -28,6 +28,7 @@ import { XLarge } from './home/x-large';
 import {LoginComponent} from './login/components/login/';
 import {PlaceComponent} from './trip/components/place/';
 import {TripComponent} from './trip/components/trip/';
+import {TripListComponent} from './trip/components/list/';
 import {TimelineViewComponent} from './trip/view.components/timeline/';
 import {MoveInfoViewComponent} from './trip/view.components/move-info/';
 import {PlaceInfoViewComponent} from './trip/view.components/place-info/';
@@ -77,6 +78,7 @@ type StoreType = {
     HomeComponent,
     PlaceComponent,
     TripComponent,
+    TripListComponent,
     ...PLACE_VIEWS,
     ...INVOICE_COMPONENTS,
     AccountComponent,

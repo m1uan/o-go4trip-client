@@ -73,6 +73,10 @@ export class TripComponent {
   public style: Object = {};
    
   placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
+
+  id : any;
+
+  uuid : any;
     
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, private _tripService : TripService ) {
@@ -122,12 +126,12 @@ export class TripComponent {
     
 
      const sub = this.route.params.subscribe(params => {
-       const id = params['id'];
-       const uuid = params['uuid'];
+       this.id = params['id'];
+       this.uuid = params['uuid'];
         // could happend the visitor of this page
         // is comming with empty id -> show just search box
-        if(id && uuid){
-            this.load(id, uuid);
+        if(this.id && this.uuid){
+            this.load(this.id, this.uuid);
         }
      });
 
@@ -138,7 +142,7 @@ export class TripComponent {
   public load(id, uuid){
     console.log(id, uuid);
     this._tripService.loadTrip(id, uuid, (data)=>{
-      this.places = data.places;
+      this.places = data.alternatives.placesmoves;
     });
   }
 
@@ -151,7 +155,7 @@ export class TripComponent {
   private onDropModel(args) {
     let [el, target, source] = args;
     // do something else
-    console.log(args, this.places);
+    console.log('onDrop', args, this.places);
   }
 
   private onRemoveModel(args) {

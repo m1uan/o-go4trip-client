@@ -1,0 +1,4 @@
+
+<div *ngFor="let trip of trips">
+    <a routerLink="/trip/{{trip.id}}/alternative/{{trip.alternatives[0].uuid}}">{{trip.id}} - {{trip.alternatives[0].uuid}}</a>
+</div>
