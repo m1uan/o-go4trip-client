@@ -59,7 +59,7 @@ export class MoveInfoViewComponent {
   }
   
   public ngOnChanges(changes: any){
-    console.log('ngOnChanges', this.place, this.places);
+    //console.log('ngOnChanges', this.place, this.places);
   }
   
 

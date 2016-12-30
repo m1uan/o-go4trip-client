@@ -97,8 +97,8 @@ export class TripComponent {
 
     
 
-    _dragulaService.dropModel.subscribe((value) => {
-      this.onDropModel(value.slice(1));
+    _dragulaService.dropModel.subscribe((value, value2, value3) => {
+      this.onDropModel(value, value2, value3);
     });
     
     _dragulaService.removeModel.subscribe((value) => {
@@ -152,10 +152,31 @@ export class TripComponent {
   }
   
     
-  private onDropModel(args) {
-    let [el, target, source] = args;
+  private onDropModel(args, args2, args3) {
+    let [name, el, target, source] = args;
+    let placeId = el.id.split('-')[0];
+    let newIndex, newIndexCount = 0;
+
+    target.childNodes.forEach((child, idx)=>{
+      console.log(child.id ? child.id.split('-').slice(1).join('-') : 'no id');
+      if(child.id && child.id.split('-').slice(1).join('-') == 'places-id'){
+        
+        if(child.id == el.id){
+          newIndex = newIndexCount;
+          //return true;
+        }
+
+        newIndexCount ++;
+      }
+      
+    })
+
+    this._tripService.placeChangeOrder(this.uuid, placeId, newIndex, ()=>{
+
+    });
+
     // do something else
-    console.log('onDrop', args, this.places);
+    console.log('onDrop', args, el.id, placeId, newIndex);
   }
 
   private onRemoveModel(args) {

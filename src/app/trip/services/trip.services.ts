@@ -32,7 +32,7 @@ export class TripService {
     }
 
     placeChangeOrder(uuid, placeid, neworder, callback){
-        this.http.post('alternatives/' + uuid + '/places/' + placeid, {"order":neworder}).subscribe((data)=>{
+        this.http.put('alternatives/' + uuid + '/places/' + placeid, {"order":neworder}).subscribe((data)=>{
             callback(data);
         });
     }

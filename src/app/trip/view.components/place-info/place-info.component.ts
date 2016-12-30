@@ -77,7 +77,7 @@ export class PlaceInfoViewComponent {
     //this.fromPlace = this.place;
     this.toPlace = this.places[toIndex];
     
-    console.log(this.index, this.place, this.places);
+    //console.log(this.index, this.place, this.places);
   }
   
   validate(event: ResizeEvent): boolean {

@@ -5,7 +5,7 @@
 
 <div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
     <!--<div id="places" class="places">-->
-    <div *ngFor="let place of places;let idx = index">
+    <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
         <div class="handle">M</div>
         <g4t-place-info-view  [place]="place" [places]="places" [index]="idx"></g4t-place-info-view>
     </div>
