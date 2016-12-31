@@ -27,6 +27,8 @@ import * as _ from 'lodash';
 import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 import {EviService} from '../../../shared/services/evi.service';
 
+import {TripService} from '../../services/trip.services';
+
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
@@ -47,15 +49,19 @@ export class PlaceInfoViewComponent {
   @Input('place') place : any;
   @Input('places') places: Array<any>;
   @Input('index') index : number;
+  @Input('uuid') uuid: string;
   
-  
+  timerToSave = null;
+
   //public fromPlace : any;
   public toPlace : any;
 
-  public style: Object = {};
+  public style: any = {
+    height: '100px'
+  };
   
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _tripService : TripService) {
       
   }
 
@@ -68,6 +74,9 @@ export class PlaceInfoViewComponent {
   }
   
   public ngOnChanges(changes: any){
+    console.log('ngOnChanges', this.place);
+    this.style.height = `${this.place.stayover}px`;
+
     let toIndex = this.index+1;
     if(toIndex == this.places.length){
       // this is last one
@@ -96,6 +105,15 @@ export class PlaceInfoViewComponent {
       width: `${event.rectangle.width}px`,
       height: `${event.rectangle.height}px`
     };
+
+    if(this.timerToSave){
+      clearTimeout(this.timerToSave);
+    }
+
+    this.timerToSave = window.setTimeout(()=>{
+      this._tripService.placeStayover(this.uuid, this.place.id, event.rectangle.height, ()=>{});
+    }, 250);
+    
   }
 
 }

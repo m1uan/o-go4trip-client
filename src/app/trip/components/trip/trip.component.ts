@@ -42,7 +42,7 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {EviService} from '../../../shared/services/evi.service';
 
-import {TripService} from '../../services/trip.services'
+import {TripService} from '../../services/trip.services';
 
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
@@ -159,6 +159,9 @@ export class TripComponent {
 
     target.childNodes.forEach((child, idx)=>{
       console.log(child.id ? child.id.split('-').slice(1).join('-') : 'no id');
+
+      // in childNodes are also childs what is not places
+      // so take it by id name
       if(child.id && child.id.split('-').slice(1).join('-') == 'places-id'){
         
         if(child.id == el.id){
@@ -171,8 +174,8 @@ export class TripComponent {
       
     })
 
-    this._tripService.placeChangeOrder(this.uuid, placeId, newIndex, ()=>{
-
+    this._tripService.placeChangeOrder(this.uuid, placeId, newIndex, (data)=>{
+      this.places = data.places;
     });
 
     // do something else

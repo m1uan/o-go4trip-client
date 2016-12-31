@@ -37,4 +37,10 @@ export class TripService {
         });
     }
 
+    placeStayover(uuid, placeid, stayover, callback){
+        this.http.put('alternatives/' + uuid + '/places/' + placeid, {stayover}).subscribe((data)=>{
+            callback(data);
+        });
+    }
+
 }
