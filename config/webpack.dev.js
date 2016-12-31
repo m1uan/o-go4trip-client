@@ -97,6 +97,7 @@ module.exports = function (options) {
        */
       // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
       new DefinePlugin({
+        'API_SERVER' : '"http://localhost:3333"',
         'API_SERVER_URL' : '"http://localhost:3333/api/"',
         'API_SERVER_MOCK' : 'false',
         'ENV': JSON.stringify(METADATA.ENV),

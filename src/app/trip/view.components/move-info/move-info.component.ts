@@ -41,17 +41,23 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 })
 export class MoveInfoViewComponent {
  
-  @Input('toPlace') toPlace : any;
+  @Input('moves') moves : any;
   @Input('fromPlace') fromPlace : any;
   @Input('places') places: Array<any>;
   
+  public serverURL = API_SERVER;
+
+  public style: any = {
+    height: '100px'
+  };
+
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
       
   }
 
   public ngOnInit() {
-  
+  this.style.height = this.moves.timetake + "px";
   }
 
   public ngAfterViewInit() {

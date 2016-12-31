@@ -1,5 +1,8 @@
 
-<div class="main-move-info">
-    
-    <span>{{fromPlace?.name}}</span> - <span>{{toPlace?.name}}</span>
+<div class="main-move-info" [ngStyle]="style">
+    <div>
+        <img width="200px" src="{{serverURL}}/assets/gas/{{moves.cache.image_thumb_key}}" />
+    </div>
+    <div>{{moves.timetake/60}}({{moves.timetake}})</div>
+    <div>{{moves.km}} km</div>
 </div>

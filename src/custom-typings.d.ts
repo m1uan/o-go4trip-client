@@ -57,6 +57,7 @@ declare module 'modern-lru' {
 */
 
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
+declare var API_SERVER: string;
 declare var API_SERVER_URL: string;
 declare var API_SERVER_MOCK : boolean;
 declare var ENV: string;

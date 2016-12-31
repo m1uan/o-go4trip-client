@@ -1,7 +1,6 @@
 <div >
     <div class="handle">MOVE</div>
-    <div
-    class="main-place-info "
+    <div class="main-place-info"
       [ngStyle]="style"
         mwlResizable
         [validateResize]="validate"
@@ -12,5 +11,5 @@
     </div>
     
 </div>
-<g4t-move-info-view [places]="places" [toPlace]="toPlace" [fromPlace]="place"></g4t-move-info-view>
+<g4t-move-info-view *ngIf="place.moves" [places]="places" [moves]="place.moves" [fromPlace]="place"></g4t-move-info-view>
 
