@@ -51,13 +51,28 @@ export class MoveInfoViewComponent {
     height: '100px'
   };
 
+  public imageStyle : any = {
+    height: '100px'
+  }
+
+  toPlace : any = null;
+
+  hours : number = 0;
+  minutes: number = 0;
+
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
       
   }
 
   public ngOnInit() {
-  this.style.height = this.moves.timetake + "px";
+    let height = (this.moves.timetake/2);
+    this.style.height = height + "px";
+    this.imageStyle.height = Math.round(height+20) + "px";
+
+    this.hours = Math.floor( this.moves.timetake /60);          
+    this.minutes = this.moves.timetake % 60;
+
   }
 
   public ngAfterViewInit() {
@@ -66,6 +81,19 @@ export class MoveInfoViewComponent {
   
   public ngOnChanges(changes: any){
     //console.log('ngOnChanges', this.place, this.places);
+    for(let i = 0; i < this.places.length; i++){
+      let place = this.places[i];
+
+      if(place.id == this.fromPlace.id){
+        if(i < this.places.length-1){
+          this.toPlace = this.places[i+1];
+        } else {
+          this.toPlace = this.places[0];
+        }
+        
+        
+      }
+    }
   }
   
 

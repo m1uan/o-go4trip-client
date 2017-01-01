@@ -11,7 +11,7 @@
             </td>
             <td>
                 <div>
-                     <div *ngFor="let hour of hours;let hidx = index;" class="day" [ngClass]="{'evening' : hidx < 6 || hidx > 18}">
+                     <div *ngFor="let hour of hours;let hidx = index;" class="hour" [ngClass]="{'evening' : hidx < 6 || hidx > 18}">
                         {{hour}}
                     </div>
                 </div>

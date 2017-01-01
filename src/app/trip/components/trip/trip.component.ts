@@ -188,6 +188,12 @@ export class TripComponent {
     console.log(args);
   }
   
+  public onDelete(event){
+    console.log('public onDelete(event)', event);
+    this._tripService.placeDelete(this.uuid, event, (data)=>{
+      this.places = data.places;
+    });
+  }
 
 }
 

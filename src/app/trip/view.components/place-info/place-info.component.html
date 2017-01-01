@@ -1,5 +1,5 @@
 <div >
-    <div class="handle">MOVE</div>
+    
     <div class="main-place-info"
       [ngStyle]="style"
         mwlResizable
@@ -7,7 +7,20 @@
         [resizeEdges]="{bottom: true}"
         [enableGhostResize]="false"
         (resizing)="onResizing($event)">
-        <h1>{{place?.name}}</h1>
+
+        
+        <h1 >
+            <span class="handle">{{place?.name}}</span>
+            
+            <span class="delete" >
+                <span *ngIf="!deleteActive" class="button tiny danger" (click)="deleteActive=true">[delete]</span>
+                <span *ngIf="deleteActive">
+                    realy delete it ? 
+                    <span class="button tiny alert" (click)="onDelete()">yes</span>
+                    <span class="button tiny success" (click)="deleteActive=false">no</span>
+                </span>
+            </span>
+        </h1>
     </div>
     
 </div>

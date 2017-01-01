@@ -59,7 +59,7 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 })
 export class TimelineViewComponent {
 
-  days = [1,2,3,4];
+  days = [1,2,3,4,5,6,7];
   
   hours = [
     '01:00',

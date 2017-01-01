@@ -1,4 +1,38 @@
+@import '../../../app.component.scss';
+
 .main-move-info {
-    background-color: lightblue;
+    background-color: $color-move;
     
+}
+
+.info {
+    margin-top:-10px;
+    margin-left:250px;
+    background-color:$color-move;
+    height:22px;
+}
+
+.move-image {
+    -webkit-border-top-left-radius: 6px 6px;
+    -moz-border-radius-topleft: 6px / 6px;
+    -khtml-border-top-left-radius: 6px / 6px;
+    border-top-left-radius: 6px / 6px;
+
+    position:relative;
+    bottom:24px;
+    
+    background-color:$color-move;
+    float:right;
+    padding:2px;
+    padding-left: 10px;
+
+    span {
+        
+        vertical-align: top;
+    }
+
+    a {
+        
+        vertical-align: top;
+    }
 }

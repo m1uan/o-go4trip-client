@@ -1,8 +1,15 @@
 
 <div class="main-move-info" [ngStyle]="style">
-    <div>
-        <img width="200px" src="{{serverURL}}/assets/gas/{{moves.cache.image_thumb_key}}" />
+    <div class="move-image">
+        <span>
+            <span>{{moves.km}} km</span>
+            <span>({{hours}}:{{minutes}})</span>
+            <a (click)="addStopOver()">[add stopover]</a>            
+        </span>
+        <a href="https://www.google.cz/maps/dir/{{fromPlace.place.lat_round/1000}},{{fromPlace.place.lng_round/1000}}/{{toPlace?.place?.lat_round/1000}},{{toPlace?.place?.lng_round/1000}}" target="_new"  >
+            <img [ngStyle]="imageStyle" src="{{serverURL}}/assets/gas/{{moves.cache.image_thumb_key}}" />
+        </a>
+        
     </div>
-    <div>{{moves.timetake/60}}({{moves.timetake}})</div>
-    <div>{{moves.km}} km</div>
+    
 </div>

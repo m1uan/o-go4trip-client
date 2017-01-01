@@ -14,7 +14,7 @@
 // import { Place-info } from './trip/components.view/place-info/place-info';
 //
 
-import { Component, ViewContainerRef, ElementRef, Input, Output } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, Input, Output,EventEmitter } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -45,7 +45,7 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
   templateUrl: './place-info.component.html'
 })
 export class PlaceInfoViewComponent {
-  
+  @Output('onDelete') onDeleteEmitter = new EventEmitter();
   @Input('place') place : any;
   @Input('places') places: Array<any>;
   @Input('index') index : number;
@@ -90,7 +90,7 @@ export class PlaceInfoViewComponent {
   }
   
   validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX: number = 50;
+    const MIN_DIMENSIONS_PX: number = 10;
     if (event.rectangle.width < MIN_DIMENSIONS_PX || event.rectangle.height < MIN_DIMENSIONS_PX) {
       return false;
     }
@@ -114,6 +114,11 @@ export class PlaceInfoViewComponent {
       this._tripService.placeStayover(this.uuid, this.place.id, event.rectangle.height, ()=>{});
     }, 250);
     
+  }
+
+  onDelete(){
+    this.onDeleteEmitter.emit(this.place.id);
+     
   }
 
 }

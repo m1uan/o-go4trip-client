@@ -43,4 +43,10 @@ export class TripService {
         });
     }
 
+    placeDelete(uuid, placeid, callback){
+        this.http.delete('alternatives/' + uuid + '/places/' + placeid).subscribe((data)=>{
+            callback(data);
+        });
+    }
+
 }
