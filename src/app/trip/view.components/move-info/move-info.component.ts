@@ -66,9 +66,10 @@ export class MoveInfoViewComponent {
   }
 
   public ngOnInit() {
-    let height = (this.moves.timetake/2);
+    let height = Math.round(this.moves.timetake/2);
     this.style.height = height + "px";
-    this.imageStyle.height = Math.round(height+20) + "px";
+    this.style.lineHeight = this.style.height;
+    this.imageStyle.height = Math.round(height-10) + "px";
 
     this.hours = Math.floor( this.moves.timetake /60);          
     this.minutes = this.moves.timetake % 60;

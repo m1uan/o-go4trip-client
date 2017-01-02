@@ -1,38 +1,47 @@
 @import '../../../app.component.scss';
 
 .main-move-info {
-    background-color: $color-move;
-    
+    background-color: $color-bg-move;
+    margin:0px;
+    padding:2px;
+    color: white;
+   
+}
+
+.transport {
+    margin-left: 5px;
 }
 
 .info {
     margin-top:-10px;
     margin-left:250px;
-    background-color:$color-move;
+    background-color:$color-bg-move;
     height:22px;
 }
 
 .move-image {
-    -webkit-border-top-left-radius: 6px 6px;
-    -moz-border-radius-topleft: 6px / 6px;
-    -khtml-border-top-left-radius: 6px / 6px;
-    border-top-left-radius: 6px / 6px;
 
     position:relative;
-    bottom:24px;
-    
-    background-color:$color-move;
+    background-color:$color-bg-move;
     float:right;
-    padding:2px;
-    padding-left: 10px;
+    margin:2px;
+    padding:0px;
 
-    span {
-        
-        vertical-align: top;
-    }
-
-    a {
-        
-        vertical-align: top;
+    img, a {
+        margin:0px;
+        padding:0px;
     }
 }
+
+a {
+    color: white;
+}
+
+a:hover {
+    color: black;
+}
+
+.add-stopover {
+    color: dodgerblue;
+}
+

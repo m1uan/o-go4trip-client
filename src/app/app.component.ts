@@ -18,7 +18,7 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
     './app.component.scss'
   ],
   template: `
-    <a class="tiny button" href="#">So Tiny</a>
+    
     <nav>
       <span>
         <a [routerLink]=" ['./'] ">

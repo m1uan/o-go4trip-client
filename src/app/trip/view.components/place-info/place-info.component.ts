@@ -52,13 +52,18 @@ export class PlaceInfoViewComponent {
   @Input('uuid') uuid: string;
   
   timerToSave = null;
+  timerToShow = null;
 
   //public fromPlace : any;
   public toPlace : any;
 
   public style: any = {
-    height: '100px'
+    height: '100px',
+    lineHeight: '300px'
   };
+
+  public hours: number;
+  public minutes: number;
   
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _tripService : TripService) {
@@ -75,7 +80,12 @@ export class PlaceInfoViewComponent {
   
   public ngOnChanges(changes: any){
     console.log('ngOnChanges', this.place);
-    this.style.height = `${this.place.stayover}px`;
+
+    let height = Math.round(this.place.stayover/2)
+    let heightFromMinutes = height + 'px';
+
+    this.style.height = heightFromMinutes;
+    this.style.lineHeight = heightFromMinutes;
 
     let toIndex = this.index+1;
     if(toIndex == this.places.length){
@@ -85,8 +95,15 @@ export class PlaceInfoViewComponent {
     
     //this.fromPlace = this.place;
     this.toPlace = this.places[toIndex];
-    
+
+   
+    this.recountTime(this.place.stayover);
     //console.log(this.index, this.place, this.places);
+  }
+
+  public recountTime(timestay){
+    this.hours = Math.floor( timestay /60);          
+    this.minutes = timestay % 60;
   }
   
   validate(event: ResizeEvent): boolean {
@@ -99,20 +116,34 @@ export class PlaceInfoViewComponent {
 
   onResizing(event: ResizeEvent): void {
     this.style = {
-      
-      left: `${event.rectangle.left}px`,
-      top: `${event.rectangle.top}px`,
-      width: `${event.rectangle.width}px`,
+      lineHeight: `${event.rectangle.height}px`,
       height: `${event.rectangle.height}px`
     };
+
+    
+
+    if(this.timerToShow){
+      return;
+    }
+
+    let totalMinutes = Math.round(event.rectangle.height*2);
+
+    
 
     if(this.timerToSave){
       clearTimeout(this.timerToSave);
     }
 
+    
+
     this.timerToSave = window.setTimeout(()=>{
-      this._tripService.placeStayover(this.uuid, this.place.id, event.rectangle.height, ()=>{});
+      this._tripService.placeStayover(this.uuid, this.place.id, totalMinutes, ()=>{});
     }, 250);
+
+    this.timerToShow = window.setTimeout(()=>{
+      this.recountTime(totalMinutes);
+      this.timerToShow = null;
+    },20);
     
   }
 

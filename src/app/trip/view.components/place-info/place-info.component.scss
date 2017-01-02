@@ -1,13 +1,17 @@
 @import '../../../app.component.scss';
 
 .main-place-info {
-    background-color: $color-place;
+    background-color: $color-bg-place;
       
     margin: auto;
 }
 
+.visiting {
+    margin-left: 5px;
+}
+
 .move-info{
-    background-color: $color-move;
+    background-color: $color-bg-move;
     height:20px;
     position:relative;
     bottom:10px;
@@ -26,6 +30,13 @@ h1{
 }
 
 .delete {
-    font-size: 14px;
-    margin:8px;
+
+}
+
+.place-name{
+    font-weight: bold;
+}
+
+.delete-link {
+    color:orangered;
 }

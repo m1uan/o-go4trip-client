@@ -1,6 +1,6 @@
 
 
-table, tr, td, .no-margin-no-padding {
+table, tbody, tr, td, .no-margin-no-padding {
     margin:0px;
     padding:0px;
 }
@@ -9,13 +9,15 @@ table {
     border-spacing: 0;
     border-collapse: collapse;
     background-color:red;
+    padding:0px;
 }
 
 
 .day-info {
     margin:0px;
     padding:0px;
-    background-color:yellow;
+    background-color:#3d3d3d;
+    color: white;
 }
 
 h6{
