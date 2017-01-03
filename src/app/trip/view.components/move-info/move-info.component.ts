@@ -26,6 +26,8 @@ import * as _ from 'lodash';
 import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 import {EviService} from '../../../shared/services/evi.service';
 
+import {TripService} from '../../services/trip.services';
+
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
@@ -44,6 +46,7 @@ export class MoveInfoViewComponent {
   @Input('moves') moves : any;
   @Input('fromPlace') fromPlace : any;
   @Input('places') places: Array<any>;
+  @Input('index') index: number;
   
   public serverURL = API_SERVER;
 
@@ -61,7 +64,7 @@ export class MoveInfoViewComponent {
   minutes: number = 0;
 
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, public tripService : TripService ) {
       
   }
 
@@ -95,6 +98,10 @@ export class MoveInfoViewComponent {
         
       }
     }
+  }
+
+  addStopOver(){
+
   }
   
 

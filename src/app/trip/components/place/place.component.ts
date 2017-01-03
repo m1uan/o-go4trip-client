@@ -84,10 +84,11 @@ export class PlaceComponent {
   // Set our default values
   public lat : number;
   public lng : number;
-  public zoom : number = 4;
+  public zoom : number = 6;
 
-  public id;
+  public tripId;
   public uuid;
+  public afterIndex;
 
   @ViewChild("searchGoogle") public searchElementRef: ElementRef;
   public searchControl: FormControl;
@@ -106,12 +107,15 @@ export class PlaceComponent {
   ngOnInit() {
 
     const sub = this.route.params.subscribe(params => {
-       this.id = params['id'];
+       this.tripId = params['tripid'];
        this.uuid = params['uuid'];
+       this.afterIndex = params['afterIndex']
         // could happend the visitor of this page
         // is comming with empty id -> show just search box
-        if(this.id && this.uuid){
-            
+        if(params['lat'] && params['lng']){
+            this.lat = Number(params['lat']);
+            this.lng = Number(params['lng']);
+            //console.log(this.lat, this.lng);
         }
      });
 
@@ -127,19 +131,23 @@ export class PlaceComponent {
         //get the place result
         let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
+        
         //set latitude and longitude
         this.lat = place.geometry.location.lat();
         this.lng = place.geometry.location.lng();
+         
+        
 
-        console.log(this.lat, this.lng);
 
-        if(this.id && this.uuid){
+        if(this.tripId && this.uuid){
 
-          this._tripService.addPlaceToAlternative(this.lat, this.lng, place.name, this.uuid, (data)=>{
-            this.router.navigate(['/trip', this.id, 'alternative', this.uuid ]);
+          this._tripService.addPlaceToAlternative(this.lat, this.lng, place.name, this.uuid, this.afterIndex, (data)=>{
+            this.router.navigate(['/trip', this.tripId, 'alternative', this.uuid ]);
           });
 
         } else {
+          // in case we don't know id of trip and uuid of alternative
+          // we have to create new trip
           this._tripService.createTrip(this.lat, this.lng, place.name, (data)=>{
             this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
           })
@@ -147,8 +155,12 @@ export class PlaceComponent {
         
       });
     });
-
-    this.setCurrentPosition();
+    
+    // just in case the lat and lng was not set
+    // put the current location
+    if(!this.lat || !this.lng){
+      this.setCurrentPosition();
+    }
     
   }
 
@@ -157,6 +169,7 @@ export class PlaceComponent {
       navigator.geolocation.getCurrentPosition((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+         console.log("geolocation", this.lat, this.lng);
         this.zoom = 12;
       });
     }

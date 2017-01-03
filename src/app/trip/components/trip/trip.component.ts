@@ -53,6 +53,12 @@ interface PlaceInfo {
   index : number;
 }
 
+
+interface LngLat {
+  lng: number;
+  lat: number;
+}
+
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
@@ -77,9 +83,11 @@ export class TripComponent {
   id : any;
 
   uuid : any;
+
+  lastPlace = { } as LngLat;
     
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, private _tripService : TripService ) {
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, public tripService : TripService ) {
     
    
     // https://github.com/valor-software/ng2-dragula/issues/442
@@ -141,9 +149,7 @@ export class TripComponent {
 
   public load(id, uuid){
     console.log(id, uuid);
-    this._tripService.loadTrip(id, uuid, (data)=>{
-      this.places = data.alternatives.placesmoves;
-    });
+    this.tripService.loadTrip(id, uuid, (data) => this.updatePlaces(data.alternatives.placesmoves));
   }
 
 
@@ -174,9 +180,7 @@ export class TripComponent {
       
     })
 
-    this._tripService.placeChangeOrder(this.uuid, placeId, newIndex, (data)=>{
-      this.places = data.places;
-    });
+    this.tripService.placeChangeOrder(this.uuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
 
     // do something else
     console.log('onDrop', args, el.id, placeId, newIndex);
@@ -190,10 +194,15 @@ export class TripComponent {
   
   public onDelete(event){
     console.log('public onDelete(event)', event);
-    this._tripService.placeDelete(this.uuid, event, (data)=>{
-      this.places = data.places;
-    });
+    this.tripService.placeDelete(this.uuid, event, (data)=> this.updatePlaces(data.places));
   }
+
+  public updatePlaces(places){
+    this.places = places;
+    
+  }
+
+  
 
 }
 

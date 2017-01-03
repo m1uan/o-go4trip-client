@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-//import {AuthenticatedHttp} from './authenticated-http';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, Headers, Response, ConnectionBackend, RequestOptions, RequestOptionsArgs } from "@angular/http"
 
 import { Overlay } from 'angular2-modal';
@@ -20,8 +20,12 @@ export class EviService {
   public moment = _moment;
   public numeral = _numeral;
 
-  constructor(public http: EviHttpService, public modal: Modal, public settings : SettingsService ) {
+  constructor(public http: EviHttpService, public modal: Modal, public settings : SettingsService, public router: Router ) {
 
+  }
+
+  navigate(params){
+    this.router.navigate(params);
   }
 
 }
