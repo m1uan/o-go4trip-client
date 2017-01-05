@@ -25,7 +25,7 @@
 //
 
 
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, Input } from '@angular/core';
 
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
@@ -58,6 +58,10 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
   templateUrl: './timeline.component.html'
 })
 export class TimelineViewComponent {
+
+  @Input('totalMinutes') public totalTripMinutes = 0;
+
+  public lineDays;
 
   days = [1,2,3,4,5,6,7];
   
@@ -97,6 +101,17 @@ export class TimelineViewComponent {
 
   public ngAfterViewInit() {
     $(this._el.nativeElement.ownerDocument).foundation();
+  }
+
+  public ngOnChanges(){
+    // always adding week in adwance
+    this.lineDays = Math.ceil(this.totalTripMinutes/1440) + 8;
+
+    this.days = [];
+
+    for(let i = 0; i < this.lineDays; i++){
+      this.days.push(i+1);
+    }
   }
 
 }

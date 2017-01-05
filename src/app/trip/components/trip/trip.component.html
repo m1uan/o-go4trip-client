@@ -1,16 +1,29 @@
 
-<div class="timeline">
-    <g4t-trip-timeline></g4t-trip-timeline>
-</div>
-
-<div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
-    <!--<div id="places" class="places">-->
-    <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
-        
-        <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [uuid]="uuid" (onDelete)="onDelete($event)"></g4t-place-info-view>
+<div class="row">
+      <div class="large-3 columns"  > 
+        <div class="alternatives">
+            <a>alternative A</a>
+            {{totalKm}}km {{alternativeDays}}days {{alternativeHours}}h {{alternativeMin}}min
+        </div>
     </div>
-</div>
-<div class="clearfix">
-    <div class="button" (click)="tripService.onNewPlace()">Add place</div>
-    
-</div>
+    <div class="large-9 columns">
+        <div class="timeline">
+            <g4t-trip-timeline [totalMinutes]="totalMinutes"></g4t-trip-timeline>
+        </div>
+            
+        <div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
+            <!--<div id="places" class="places">-->
+            <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
+                
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [uuid]="uuid" (onDelete)="onDelete($event)"></g4t-place-info-view>
+            </div>
+            
+        </div>
+        <div class="clearfix">
+            <div class="button" (click)="tripService.onNewPlace()">Add place</div>
+            
+        </div>
+    </div>
+
+  
+<div>

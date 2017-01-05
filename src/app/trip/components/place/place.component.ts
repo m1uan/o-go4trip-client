@@ -25,7 +25,7 @@
 //
 
 
-import { Component, ViewContainerRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, ViewChild, NgZone } from '@angular/core';
 
 import { AppState } from '../app.service';
 
@@ -56,6 +56,8 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 
 declare var google: any;
 
+const UNKNOW_PLACE_NAME = "Unknow place :-("
+
 let data = {
   // lat lng
   // 49.22297320000001 17.85482120000006 - vizovice
@@ -84,11 +86,22 @@ export class PlaceComponent {
   // Set our default values
   public lat : number;
   public lng : number;
+
+  public marker_lat : number;
+  public marker_lng : number;
+
   public zoom : number = 6;
 
   public tripId;
   public uuid;
   public afterIndex;
+
+  public geocoder;
+  public geocoder_loading = false;
+
+  public placeName : string = null;
+
+  @ViewChild("googleMapInfoWindow") public googleMapInfoWindowView : ElementRef;
 
   @ViewChild("searchGoogle") public searchElementRef: ElementRef;
   public searchControl: FormControl;
@@ -100,7 +113,8 @@ export class PlaceComponent {
                 private _el: ElementRef , 
                 private _gmaps : GMapsService,
                 private mapsAPILoader: MapsAPILoader,
-                private _tripService: TripService) {
+                private _tripService: TripService,
+                public zone: NgZone) {
       
   }
 
@@ -124,34 +138,29 @@ export class PlaceComponent {
 
     // http://brianflove.com/2016/10/18/angular-2-google-maps-places-autocomplete/
     this.mapsAPILoader.load().then(() => {
+      
+      this.geocoder = new google.maps.Geocoder;
+
+      
+      
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-      //  types: ["address"]
+        //  types: ["address"]
       });
+      
       autocomplete.addListener("place_changed", () => {
         //get the place result
         let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-        
+        // for some reason the zone doesn't handle changes 
+        // when they komming from google
+
+        this.zone.run(()=>{
         //set latitude and longitude
-        this.lat = place.geometry.location.lat();
-        this.lng = place.geometry.location.lng();
-         
-        
-
-
-        if(this.tripId && this.uuid){
-
-          this._tripService.addPlaceToAlternative(this.lat, this.lng, place.name, this.uuid, this.afterIndex, (data)=>{
-            this.router.navigate(['/trip', this.tripId, 'alternative', this.uuid ]);
-          });
-
-        } else {
-          // in case we don't know id of trip and uuid of alternative
-          // we have to create new trip
-          this._tripService.createTrip(this.lat, this.lng, place.name, (data)=>{
-            this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
-          })
-        }
+          this.lat = this.marker_lat = place.geometry.location.lat();
+          this.lng = this.marker_lng = place.geometry.location.lng();
+          
+          this.placeName = place.formatted_address;
+        });
         
       });
     });
@@ -175,12 +184,89 @@ export class PlaceComponent {
     }
   }
 
+
+
+  addPlaceToTripOrCreateNewTrip(){
+    this.geocoder_loading = true;
+    if(this.tripId && this.uuid){
+
+        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, (data)=>{
+          this.router.navigate(['/trip', this.tripId, 'alternative', this.uuid ]);
+        });
+
+      } else {
+        // in case we don't know id of trip and uuid of alternative
+        // we have to create new trip
+        this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, (data)=>{
+          this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
+        })
+      }
+  }
+
   ngAfterViewInit() {
     $(this._el.nativeElement.ownerDocument).foundation();
   }
 
   onSearch(){
     
+  }
+
+  onMapClick(data){
+    //this.googleMapInfoWindowView.open();
+    this.marker_lat = null;
+    this.marker_lng = null;
+
+    this.geocoder_loading = true;
+    this.placeName = null;
+
+    this.marker_lat = data.coords.lat;
+    this.marker_lng = data.coords.lng;
+
+    let location = {
+      'location': {
+          lat: this.marker_lat,
+          lng : this.marker_lng
+      }
+    };
+
+    this.geocoder.geocode(location, (results, status) => {
+        
+        this.zone.run(()=>{
+          this.updatePlaceNameFromGeoCodeData(results, status);
+        })
+        
+
+        console.log('results,status', results, status);
+    });
+
+  }
+
+  updatePlaceNameFromGeoCodeData(results, status){
+    this.geocoder_loading = false;
+        
+        
+        if(results.length > 0){
+          
+          let addressComponents = results[0].address_components;
+          
+          // construct name from street[1] + city[2] + state[3]
+          if(addressComponents && addressComponents.length>3){
+              this.placeName = addressComponents[1].short_name + ' ,' 
+                                + addressComponents[2].short_name + ' ,' 
+                                + addressComponents[3].short_name
+          } else {
+            // use formated address
+            this.placeName = results[0].formatted_address;
+          }
+        } else {
+
+          // the google can't name this place
+          this.placeName = UNKNOW_PLACE_NAME
+        }
+  }
+
+  onInfoWindowClose(event){
+    console.log('onInfoWindowClose', event);
   }
 
 }

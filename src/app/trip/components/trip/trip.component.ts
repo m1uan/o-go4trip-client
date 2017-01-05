@@ -75,6 +75,8 @@ export class TripComponent {
   private BAG = false;
 
   public places = [];
+
+  public alternatives = [];
   
   public style: Object = {};
    
@@ -85,6 +87,12 @@ export class TripComponent {
   uuid : any;
 
   lastPlace = { } as LngLat;
+
+  totalMinutes = 0;
+  alternativeDays = 0;
+  alternativeHours = 0;
+  alternativeMinutes = 0;
+  totalKm = 0;
     
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, public tripService : TripService ) {
@@ -197,9 +205,36 @@ export class TripComponent {
     this.tripService.placeDelete(this.uuid, event, (data)=> this.updatePlaces(data.places));
   }
 
+
+
   public updatePlaces(places){
     this.places = places;
+
+    this.updateTimeForAlternative();
     
+  }
+
+  public updateTimeForAlternative(){
+
+
+    this.totalMinutes = 0;
+    this.totalKm = 0;
+
+    this.places.forEach((place)=>{
+        this.totalMinutes += +place.stayover;
+
+        if(place.moves){
+          this.totalMinutes += place.moves.timetake;
+          this.totalKm += place.moves.km;
+        }
+
+    })
+
+    let totalHours = Math.floor(this.totalMinutes/60);
+    
+    this.alternativeDays = Math.floor(totalHours/24);
+    this.alternativeHours = totalHours % 24;
+    this.alternativeMinutes = this.totalMinutes %60;
   }
 
   

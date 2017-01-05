@@ -17,7 +17,7 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
  * Webpack Constants
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || 3000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
@@ -97,8 +97,8 @@ module.exports = function (options) {
        */
       // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
       new DefinePlugin({
-        'API_SERVER' : '"http://localhost:3333"',
-        'API_SERVER_URL' : '"http://localhost:3333/api/"',
+        'API_SERVER' : '"http://127.0.0.1:3333"',
+        'API_SERVER_URL' : '"http://127.0.0.1:3333/api/"',
         'API_SERVER_MOCK' : 'false',
         'ENV': JSON.stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
