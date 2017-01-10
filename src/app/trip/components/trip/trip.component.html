@@ -1,9 +1,13 @@
 
 <div class="row">
       <div class="large-3 columns"  > 
-        <div class="alternatives">
-            <a>alternative A</a>
-            {{totalKm}}km {{alternativeDays}}days {{alternativeHours}}h {{alternativeMin}}min
+        <div class="alternatives" *ngFor="let alternative of alternatives">
+            <a href="#" (click)="loadAlternative(alternative.uuid)">{{alternative.name}}</a>
+            {{alternative.total_km}}km {{alternative.time_transport}} {{alternative.time_visit}} {{alternative.time_transport + alternative.time_visit}}
+            <div>
+                <a href="#" (click)="cloneAlternative(alternative.uuid)">clone</a> | <a href="#"(click)="cloneAlternative(alternative.uuid, true)">reverse</a> | <a href="#">new trip</a>
+
+            </div>
         </div>
     </div>
     <div class="large-9 columns">

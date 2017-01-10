@@ -157,7 +157,7 @@ export class TripComponent {
 
   public load(id, uuid){
     console.log(id, uuid);
-    this.tripService.loadTrip(id, uuid, (data) => this.updatePlaces(data.alternatives.placesmoves));
+    this.tripService.loadTrip(id, uuid, (data) => this.updateTrip(data));
   }
 
 
@@ -205,7 +205,10 @@ export class TripComponent {
     this.tripService.placeDelete(this.uuid, event, (data)=> this.updatePlaces(data.places));
   }
 
-
+  public updateTrip(tripData){
+    this.updatePlaces(tripData.main.placesmoves);
+    this.alternatives = tripData.alternatives;
+  }
 
   public updatePlaces(places){
     this.places = places;
@@ -237,6 +240,21 @@ export class TripComponent {
     this.alternativeMinutes = this.totalMinutes %60;
   }
 
+  public loadAlternative(uuid){
+    this.tripService.getAlternative(uuid, (alternative)=>{
+      this.updatePlaces(alternative.placesmoves);
+    });
+
+    return false;
+  }
+
+  public cloneAlternative(uuid, reverse = false){
+    this.tripService.cloneAlternative(uuid, reverse, (alternative)=>{
+      this.alternatives.push(alternative);
+    });
+
+    return false;
+  }
   
 
 }

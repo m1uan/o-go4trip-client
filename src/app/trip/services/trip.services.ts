@@ -22,13 +22,13 @@ export class TripService {
         });
     }
 
-    loadTrip(tripId, alternativeUuid, callback){
-        this.tripId = tripId;
+    loadTrip(tripUuid, alternativeUuid, callback){
+        this.tripId = tripUuid;
         this.alternativeUuid = alternativeUuid;
 
-        this.http.get('trips/' + this.tripId + '/' + this.alternativeUuid).subscribe((data)=>{
+        this.http.get('trips/' + this.tripId).subscribe((data)=>{
             
-            this.updatePlaces(data.alternatives.placesmoves)
+            this.updatePlaces(data.main.placesmoves)
             callback(data)
             
         });
@@ -131,7 +131,25 @@ export class TripService {
             this.evi.navigate(['/place', this.tripId, 'alternative', this.alternativeUuid, 'new']);
         }
 
-    
-  }
+    }
+
+    public getAlternative(uuid, callback){
+        this.http.get('alternatives/' + uuid).subscribe(data=>callback(data.loaded));
+    }
+
+    public cloneAlternative(alternativeUuid, reverse, callback = null){
+        if(!callback){
+            callback = reverse;
+            reverse = false;
+        }
+
+        var postData = {
+            reverse : reverse
+        }
+
+        this.http.post('alternatives/'+alternativeUuid+'/clone', postData).subscribe((data)=>{
+            callback(data.alternative);
+        });
+    }
 
 }
