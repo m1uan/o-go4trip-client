@@ -49,7 +49,7 @@ export class PlaceInfoViewComponent {
   @Input('place') place : any;
   @Input('places') places: Array<any>;
   @Input('index') index : number;
-  @Input('uuid') uuid: string;
+  @Input('wayUuid') uuid: string;
   
   timerToSave = null;
   timerToShow = null;

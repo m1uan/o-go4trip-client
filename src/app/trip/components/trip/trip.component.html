@@ -1,12 +1,52 @@
 
 <div class="row">
       <div class="large-3 columns"  > 
-        <div class="alternatives" *ngFor="let alternative of alternatives">
-            <a href="#" (click)="loadAlternative(alternative.uuid)">{{alternative.name}}</a>
-            {{alternative.total_km}}km {{alternative.time_transport}} {{alternative.time_visit}} {{alternative.time_transport + alternative.time_visit}}
-            <div>
-                <a href="#" (click)="cloneAlternative(alternative.uuid)">clone</a> | <a href="#"(click)="cloneAlternative(alternative.uuid, true)">reverse</a> | <a href="#">new trip</a>
+        <div class="alternatives" *ngFor="let way of alternatives; let idx = index">
+            
+            <span [ngClass]="{activeTripWay: activeTripWay==way.uuid}">
+                
+                
+                <a (click)="setActiveTripWay(way.uuid)">
+            
+                    <h4> 
+                        <span *ngIf="trip.main_way_id == way.id">*</span> 
+                        <a (click)="setTripWayAsMain(way, idx)" *ngIf="trip.main_way_id != way.id">O</a> 
+                            {{way.name}}
+                        <span *ngIf="trip.main_way_id == way.id">*</span>
+                    </h4>
+                    {{way.total_km}}km {{way.time_transport}} {{way.time_visit}} {{way.time_transport + way.time_visit}} 
+                </a>
+            </span>
+            
 
+            <!-- 
+                action list 
+            -->
+            <div *ngIf="!way.deleteActive__">
+                <a href="#" (click)="cloneAlternative(way.uuid)">clone</a> 
+                | <a href="#" (click)="cloneAlternative(way.uuid, true)">reverse</a> 
+                | <a href="#">new trip</a> 
+                
+                | <a (click)="onActivateTripWayAction(way, 'rename')">rename</a> 
+                <span *ngIf="trip.main_way_id != way.id">| <a  (click)="onActivateTripWayAction(way, 'delete')">delete</a> </span>
+            </div>
+            
+            <!-- 
+                delete action active
+            -->
+            <div *ngIf="way.deleteActive__">
+                realy delete it ? 
+                    <span class="button tiny alert" (click)="doDeleteTripWay(way.uuid, idx)">yes</span>
+                    <span class="button tiny success" (click)="way.deleteActive__=false">no</span>
+            </div>
+            
+            <!-- 
+                rename action active
+            -->
+            <div *ngIf="way.renameActive__">
+                <input [(ngModel)]="way.name">
+                <span class="button tiny alert" (click)="doUpdateTripWay(way, idx)">yes</span>
+                <span class="button tiny success" (click)="way.renameActive__=false">no</span>
             </div>
         </div>
     </div>
@@ -19,7 +59,7 @@
             <!--<div id="places" class="places">-->
             <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
                 
-                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [uuid]="uuid" (onDelete)="onDelete($event)"></g4t-place-info-view>
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="activeTripWay" (onDelete)="onDelete($event)"></g4t-place-info-view>
             </div>
             
         </div>

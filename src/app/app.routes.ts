@@ -24,7 +24,7 @@ export const ROUTES: Routes = [
   {path: 'place/:tripid/alternative/:uuid/after/:afterIndex', component: PlaceComponent},
   {path: 'trip', component: TripComponent},
   {path: 'trips', component: TripListComponent},
-  {path: 'trip/:id/alternative/:uuid', component: TripComponent},
+  {path: 'trip/:id/way/:uuid', component: TripComponent},
   {
     path: 'detail', loadChildren: () => System.import('./+detail')
       .then((comp: any) => comp.default),

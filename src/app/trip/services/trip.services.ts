@@ -22,13 +22,13 @@ export class TripService {
         });
     }
 
-    loadTrip(tripUuid, alternativeUuid, callback){
+    loadTrip(tripUuid, waysUuid, callback){
         this.tripId = tripUuid;
-        this.alternativeUuid = alternativeUuid;
+        this.alternativeUuid = waysUuid;
 
-        this.http.get('trips/' + this.tripId).subscribe((data)=>{
+        this.http.get('trips/' + this.tripId + '/ways/' + waysUuid).subscribe((data)=>{
             
-            this.updatePlaces(data.main.placesmoves)
+            this.updatePlaces(data.current.placesmoves)
             callback(data)
             
         });
@@ -134,7 +134,10 @@ export class TripService {
     }
 
     public getAlternative(uuid, callback){
-        this.http.get('alternatives/' + uuid).subscribe(data=>callback(data.loaded));
+        
+        this.alternativeUuid = uuid;
+
+        this.http.get('trip/ways/' + uuid).subscribe(data=>callback(data.loaded));
     }
 
     public cloneAlternative(alternativeUuid, reverse, callback = null){
@@ -147,8 +150,35 @@ export class TripService {
             reverse : reverse
         }
 
-        this.http.post('alternatives/'+alternativeUuid+'/clone', postData).subscribe((data)=>{
+        this.http.post('trip/ways/'+alternativeUuid+'/clone', postData).subscribe((data)=>{
             callback(data.alternative);
+        });
+    }
+
+    public deleteTripWay(wayUuid, callback = null){
+        
+
+        this.http.delete('trip/ways/'+wayUuid).subscribe((data)=>{
+            callback();
+        });
+    }
+
+    public updateTripWay(way, callback = null){
+        let wayForUpdate = {
+            name : way.name,
+            desc : way.desc
+        }
+
+        this.http.put('trip/ways/'+way.uuid, wayForUpdate).subscribe((data)=>{
+            callback(data);
+        });
+    }
+
+    public setTripWayAsMain(uuid, callback = null){
+        
+
+        this.http.post('trip/ways/'+uuid+'/main', {}).subscribe((data)=>{
+            callback(data);
         });
     }
 

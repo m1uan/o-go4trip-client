@@ -191,14 +191,14 @@ export class PlaceComponent {
     if(this.tripId && this.uuid){
 
         this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, (data)=>{
-          this.router.navigate(['/trip', this.tripId, 'alternative', this.uuid ]);
+          this.router.navigate(['/trip', this.tripId, 'way', this.uuid ]);
         });
 
       } else {
         // in case we don't know id of trip and uuid of alternative
         // we have to create new trip
         this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, (data)=>{
-          this.router.navigate(['/trip', data.id, 'alternative', data.uuid ]);
+          this.router.navigate(['/trip', data.id, 'way', data.uuid ]);
         })
       }
   }

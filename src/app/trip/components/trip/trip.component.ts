@@ -74,6 +74,10 @@ interface LngLat {
 export class TripComponent {
   private BAG = false;
 
+  public trip = null;
+
+  public activeTripWay = null;
+
   public places = [];
 
   public alternatives = [];
@@ -206,8 +210,24 @@ export class TripComponent {
   }
 
   public updateTrip(tripData){
-    this.updatePlaces(tripData.main.placesmoves);
-    this.alternatives = tripData.alternatives;
+    this.trip = tripData.trips;
+    this.activeTripWay = tripData.current.uuid;
+
+    this.updatePlaces(tripData.current.placesmoves);
+
+
+    this.alternatives = [];
+
+    // put mian to top of list
+    tripData.alternatives.forEach(way=>{
+      if(way.id == this.trip.main_way_id){
+        // put at first
+        this.alternatives.splice(0, 0, way);
+      } else {
+        this.alternatives.push(way);
+      }
+      
+    })
   }
 
   public updatePlaces(places){
@@ -240,6 +260,14 @@ export class TripComponent {
     this.alternativeMinutes = this.totalMinutes %60;
   }
 
+  public setActiveTripWay(uuid){
+
+    this.activeTripWay = uuid;
+    this.loadAlternative(uuid);
+
+    return false;
+  }
+
   public loadAlternative(uuid){
     this.tripService.getAlternative(uuid, (alternative)=>{
       this.updatePlaces(alternative.placesmoves);
@@ -256,6 +284,56 @@ export class TripComponent {
     return false;
   }
   
+  public onActivateTripWayAction(way, actionName){
+    if(actionName == 'rename'){
+      way.nameOrigin__ = way.name;
+    }
+
+
+    this.alternatives.forEach(wayEach=>{
+      wayEach.deleteActive__ = false;
+      wayEach.renameActive__ = false;
+      
+      // just for case the name was changed
+      if(wayEach.nameOrigin__){
+        wayEach.name = wayEach.nameOrigin__;
+        wayEach.nameOrigin__ = null;
+      }
+    })
+
+    way[actionName+'Active__'] = true;
+
+    console.log(actionName+'Active__', way[actionName+'Active__'])
+
+    return true;
+  }
+
+  public doDeleteTripWay(uuid, idx){
+    this.tripService.deleteTripWay(uuid,(way)=>{
+      this.alternatives.splice(idx, 1);
+      //this.alternatives.push(alternative);
+    });
+  }
+
+   public doUpdateTripWay(way, idx){
+    this.tripService.updateTripWay(way, (updatedWay)=>{
+      this.alternatives.splice(idx, 1, updatedWay);
+      //this.alternatives.push(alternative);
+    });
+  }
+
+  public setTripWayAsMain(way, idx){
+    this.tripService.setTripWayAsMain(way.uuid, (updatedWay)=>{
+      this.trip.main_way_id = way.id;
+
+      this.alternatives.splice(idx, 1);
+      this.alternatives.splice(0, 0, way);
+
+      // switch to selected
+      this.setActiveTripWay(way.uuid);
+      //this.alternatives.push(alternative);
+    });
+  }
 
 }
 
