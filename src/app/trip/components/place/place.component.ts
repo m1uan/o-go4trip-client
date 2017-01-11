@@ -70,6 +70,37 @@ let data = {
   // 49.1950602 16.606837100000007 - brno
 }
 
+function findType(addressComponents, type){
+  let res = '';
+
+  addressComponents.some(ac=>{
+    let typeIndex = ac.types.indexOf(type);
+
+    if(typeIndex != -1){
+      res = ac.short_name;
+      return true;
+    }
+
+  })
+
+  return res;
+
+}
+
+function placeNameGenerator(addressComponents){
+  let admin1 = findType(addressComponents, 'administrative_area_level_2');
+  
+  if(!admin1){
+    admin1 = findType(addressComponents, 'administrative_area_level_1');
+  }
+  
+  let locality = findType(addressComponents, 'locality');
+
+  return (locality ? locality + ', ' : '') 
+                    + (admin1 ? admin1 + ', ' : '')
+                    + findType(addressComponents, 'country');
+}
+
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
@@ -100,6 +131,8 @@ export class PlaceComponent {
   public geocoder_loading = false;
 
   public placeName : string = null;
+
+  public googlePlaceId : string = null;
 
   @ViewChild("googleMapInfoWindow") public googleMapInfoWindowView : ElementRef;
 
@@ -159,7 +192,9 @@ export class PlaceComponent {
           this.lat = this.marker_lat = place.geometry.location.lat();
           this.lng = this.marker_lng = place.geometry.location.lng();
           
-          this.placeName = place.formatted_address;
+          this.placeName = this.placeName =  placeNameGenerator(place.address_components) || place.formatted_address;
+
+          this.googlePlaceId = place.place_id;
         });
         
       });
@@ -190,15 +225,15 @@ export class PlaceComponent {
     this.geocoder_loading = true;
     if(this.tripId && this.uuid){
 
-        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, (data)=>{
+        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, this.googlePlaceId, (data)=>{
           this.router.navigate(['/trip', this.tripId, 'way', this.uuid ]);
         });
 
       } else {
         // in case we don't know id of trip and uuid of alternative
         // we have to create new trip
-        this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, (data)=>{
-          this.router.navigate(['/trip', data.id, 'way', data.uuid ]);
+        this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, this.googlePlaceId, (data)=>{
+          this.router.navigate(['/trip', data.id ]);
         })
       }
   }
@@ -243,21 +278,21 @@ export class PlaceComponent {
 
   updatePlaceNameFromGeoCodeData(results, status){
     this.geocoder_loading = false;
-        
-        
+
         if(results.length > 0){
           
           let addressComponents = results[0].address_components;
           
           // construct name from street[1] + city[2] + state[3]
           if(addressComponents && addressComponents.length>3){
-              this.placeName = addressComponents[1].short_name + ' ,' 
-                                + addressComponents[2].short_name + ' ,' 
-                                + addressComponents[3].short_name
+              this.placeName =  placeNameGenerator(addressComponents);
           } else {
             // use formated address
             this.placeName = results[0].formatted_address;
           }
+
+          this.googlePlaceId = results[0].place_id;
+
         } else {
 
           // the google can't name this place

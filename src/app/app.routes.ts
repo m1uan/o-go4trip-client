@@ -25,6 +25,7 @@ export const ROUTES: Routes = [
   {path: 'trip', component: TripComponent},
   {path: 'trips', component: TripListComponent},
   {path: 'trip/:id/way/:uuid', component: TripComponent},
+  {path: 'trip/:id', component: TripComponent},
   {
     path: 'detail', loadChildren: () => System.import('./+detail')
       .then((comp: any) => comp.default),

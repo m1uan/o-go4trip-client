@@ -15,9 +15,9 @@ export class TripService {
 
     }
 
-    createTrip(lat, lng, name, callback){
+    createTrip(lat, lng, name, googlePlaceId, callback){
 
-        this.http.post('trips', {lat, lng, name}).subscribe((data)=>{
+        this.http.post('trips', {lat, lng, name, googlePlaceId}).subscribe((data)=>{
             callback(data);
         });
     }
@@ -26,7 +26,7 @@ export class TripService {
         this.tripId = tripUuid;
         this.alternativeUuid = waysUuid;
 
-        this.http.get('trips/' + this.tripId + '/ways/' + waysUuid).subscribe((data)=>{
+        this.http.get('trips/' + this.tripId + (waysUuid ? '/ways/' + waysUuid : '')).subscribe((data)=>{
             
             this.updatePlaces(data.current.placesmoves)
             callback(data)
@@ -38,11 +38,12 @@ export class TripService {
          this.http.get('trips/').subscribe((data)=>callback(data));
     }
 
-    addPlaceToAlternative(lat, lng, name, uuid, index, callback = null){
+    addPlaceToAlternative(lat, lng, name, uuid, index, googlePlaceId, callback = null){
         let postData = {
             lat, 
             lng, 
-            name
+            name,
+            googlePlaceId
         }
 
         if(!callback){
@@ -152,6 +153,21 @@ export class TripService {
 
         this.http.post('trip/ways/'+alternativeUuid+'/clone', postData).subscribe((data)=>{
             callback(data.alternative);
+        });
+    }
+
+    public createTripFromTripWay(alternativeUuid, reverse, callback = null){
+        if(!callback){
+            callback = reverse;
+            reverse = false;
+        }
+
+        var postData = {
+            reverse : reverse
+        }
+
+        this.http.post('trip/ways/'+alternativeUuid+'/new_trip', postData).subscribe((data)=>{
+            callback(data.trips);
         });
     }
 

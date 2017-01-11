@@ -74,9 +74,12 @@ interface LngLat {
 export class TripComponent {
   private BAG = false;
 
+
+  public tripUuid : any;
+
   public trip = null;
 
-  public activeTripWay = null;
+  public tripWayUuid = null;
 
   public places = [];
 
@@ -86,9 +89,7 @@ export class TripComponent {
    
   placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
 
-  id : any;
 
-  uuid : any;
 
   lastPlace = { } as LngLat;
 
@@ -99,7 +100,12 @@ export class TripComponent {
   totalKm = 0;
     
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, private _dragulaService : DragulaService, public tripService : TripService ) {
+  constructor(private evi : EviService, 
+                private route : ActivatedRoute, 
+                private router : Router,
+                private _el: ElementRef, 
+                private _dragulaService : DragulaService, 
+                public tripService : TripService ) {
     
    
     // https://github.com/valor-software/ng2-dragula/issues/442
@@ -141,22 +147,21 @@ export class TripComponent {
 
   public ngOnInit() {
 
-    
-
-    
-
      const sub = this.route.params.subscribe(params => {
-       this.id = params['id'];
-       this.uuid = params['uuid'];
+       this.tripUuid = params['id'];
+       
+       let tripWayUuid = null;
+       if(params['uuid']){
+          tripWayUuid = params['uuid'];
+       } 
+       
         // could happend the visitor of this page
         // is comming with empty id -> show just search box
-        if(this.id && this.uuid){
-            this.load(this.id, this.uuid);
+        if(this.tripUuid){
+            this.load(this.tripUuid, tripWayUuid);
         }
      });
 
-
-    
   }
 
   public load(id, uuid){
@@ -192,7 +197,7 @@ export class TripComponent {
       
     })
 
-    this.tripService.placeChangeOrder(this.uuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
+    this.tripService.placeChangeOrder(this.tripWayUuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
 
     // do something else
     console.log('onDrop', args, el.id, placeId, newIndex);
@@ -206,12 +211,12 @@ export class TripComponent {
   
   public onDelete(event){
     console.log('public onDelete(event)', event);
-    this.tripService.placeDelete(this.uuid, event, (data)=> this.updatePlaces(data.places));
+    this.tripService.placeDelete(this.tripWayUuid, event, (data)=> this.updatePlaces(data.places));
   }
 
   public updateTrip(tripData){
     this.trip = tripData.trips;
-    this.activeTripWay = tripData.current.uuid;
+    this.tripWayUuid = tripData.current.uuid;
 
     this.updatePlaces(tripData.current.placesmoves);
 
@@ -262,23 +267,34 @@ export class TripComponent {
 
   public setActiveTripWay(uuid){
 
-    this.activeTripWay = uuid;
+    this.tripWayUuid = uuid;
     this.loadAlternative(uuid);
 
     return false;
   }
 
   public loadAlternative(uuid){
-    this.tripService.getAlternative(uuid, (alternative)=>{
-      this.updatePlaces(alternative.placesmoves);
+    this.tripService.getAlternative(uuid, (tripWay)=>{
+      this.updatePlaces(tripWay.placesmoves);
     });
 
     return false;
   }
 
   public cloneAlternative(uuid, reverse = false){
-    this.tripService.cloneAlternative(uuid, reverse, (alternative)=>{
-      this.alternatives.push(alternative);
+    this.tripService.cloneAlternative(uuid, reverse, (tripWay)=>{
+      
+      this.alternatives.push(tripWay);
+      
+      this.setActiveTripWay(tripWay.uuid);
+    });
+
+    return false;
+  }
+
+  public createTripFromTripWay(uuid, reverse = false){
+    this.tripService.createTripFromTripWay(uuid, reverse, (trips)=>{
+      this.router.navigate(['/trip', trips.uuid ]);
     });
 
     return false;
@@ -309,9 +325,21 @@ export class TripComponent {
   }
 
   public doDeleteTripWay(uuid, idx){
-    this.tripService.deleteTripWay(uuid,(way)=>{
+    // user is on trip way what is to deleted
+    // please select another tripway
+    if(this.tripWayUuid == uuid){
+      // find main trip
+      this.alternatives.some((way)=>{
+        if(way.id == this.trip.main_way_id){
+          this.setActiveTripWay(way.uuid);
+          return true;
+        }
+      });
+      
+    }
+
+    this.tripService.deleteTripWay(uuid, (way)=>{
       this.alternatives.splice(idx, 1);
-      //this.alternatives.push(alternative);
     });
   }
 

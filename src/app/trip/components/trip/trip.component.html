@@ -3,7 +3,7 @@
       <div class="large-3 columns"  > 
         <div class="alternatives" *ngFor="let way of alternatives; let idx = index">
             
-            <span [ngClass]="{activeTripWay: activeTripWay==way.uuid}">
+            <span [ngClass]="{activeTripWay: tripWayUuid==way.uuid}">
                 
                 
                 <a (click)="setActiveTripWay(way.uuid)">
@@ -25,7 +25,7 @@
             <div *ngIf="!way.deleteActive__">
                 <a href="#" (click)="cloneAlternative(way.uuid)">clone</a> 
                 | <a href="#" (click)="cloneAlternative(way.uuid, true)">reverse</a> 
-                | <a href="#">new trip</a> 
+                | <a href="#" (click)="createTripFromTripWay(way.uuid)">new trip</a> 
                 
                 | <a (click)="onActivateTripWayAction(way, 'rename')">rename</a> 
                 <span *ngIf="trip.main_way_id != way.id">| <a  (click)="onActivateTripWayAction(way, 'delete')">delete</a> </span>
@@ -59,7 +59,7 @@
             <!--<div id="places" class="places">-->
             <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
                 
-                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="activeTripWay" (onDelete)="onDelete($event)"></g4t-place-info-view>
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="tripWayUuid" (onDelete)="onDelete($event)"></g4t-place-info-view>
             </div>
             
         </div>

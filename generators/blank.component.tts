@@ -44,7 +44,10 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 export class {{ name|title }}Component {
  
   // TypeScript public modifiers
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
+  constructor(private evi : EviService, 
+                private route : ActivatedRoute, 
+                private router : Router, 
+                private _el: ElementRef ) {
       
   }
 

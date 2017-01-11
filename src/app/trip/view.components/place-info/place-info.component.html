@@ -8,13 +8,13 @@
         [enableGhostResize]="false"
         (resizing)="onResizing($event)">
 
-        
+            
             <span class="visiting">
                 <span *ngIf="index!=0">Exploring:</span>
                 <span *ngIf="index==0">Start in:</span>
             </span>
             <span class="place-name">
-                <span class="handle">{{place?.name}}</span>
+                <span class="handle"><span *ngIf="index!=0">{{index}}.</span> {{place?.name}}</span>
             </span>
             <span>({{hours}}h {{minutes}}min)</span>     
             <span class="delete" >
