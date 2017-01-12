@@ -1,5 +1,5 @@
 <div class="form-group">
-  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"  [formControl]="searchControl" #searchGoogle>
+  <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" [ngModel]="place2" [formControl]="searchControl" #searchGoogle>
 </div>
 
 
@@ -24,6 +24,7 @@
               <div class="preloader" *ngIf="geocoder_loading">Loading ...</div>
               <div *ngIf="!geocoder_loading && placeName">  <button class="button blue" (click)="addPlaceToTripOrCreateNewTrip()">{{placeName}}</button> </div>
               (click to button will add this place to your trip)
+              googlePlaceId:{{googlePlaceId}}
             </div>
        </sebm-google-map-info-window >
      </sebm-google-map-marker>

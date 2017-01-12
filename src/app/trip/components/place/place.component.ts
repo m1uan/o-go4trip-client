@@ -134,6 +134,8 @@ export class PlaceComponent {
 
   public googlePlaceId : string = null;
 
+  public autocomplete = null;
+
   @ViewChild("googleMapInfoWindow") public googleMapInfoWindowView : ElementRef;
 
   @ViewChild("searchGoogle") public searchElementRef: ElementRef;
@@ -172,14 +174,19 @@ export class PlaceComponent {
     // http://brianflove.com/2016/10/18/angular-2-google-maps-places-autocomplete/
     this.mapsAPILoader.load().then(() => {
       
-      this.geocoder = new google.maps.Geocoder;
+      this.geocoder = new google.maps.Geocoder({
+        language: 'en'
+      });
 
       
       
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         //  types: ["address"]
+        language: 'en'
       });
       
+      
+
       autocomplete.addListener("place_changed", () => {
         //get the place result
         let place: google.maps.places.PlaceResult = autocomplete.getPlace();
@@ -196,8 +203,13 @@ export class PlaceComponent {
 
           this.googlePlaceId = place.place_id;
         });
+
+        
         
       });
+
+      this.autocomplete = autocomplete;
+
     });
     
     // just in case the lat and lng was not set
@@ -246,6 +258,9 @@ export class PlaceComponent {
     
   }
 
+
+  place2 = '';
+
   onMapClick(data){
     //this.googleMapInfoWindowView.open();
     this.marker_lat = null;
@@ -261,37 +276,67 @@ export class PlaceComponent {
       'location': {
           lat: this.marker_lat,
           lng : this.marker_lng
-      }
+      },'language' : 'en'
     };
 
     this.geocoder.geocode(location, (results, status) => {
-        
+        this.placeName = null;
+
         this.zone.run(()=>{
-          this.updatePlaceNameFromGeoCodeData(results, status);
+          this.updatePlaceNameFromGeoCodeData(results, status, 'locality.political');
+          if(!this.placeName){
+            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_2.political');
+          }
+          if(!this.placeName){
+            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_1.political');
+          }
+
         })
-        
 
         console.log('results,status', results, status);
     });
 
   }
 
-  updatePlaceNameFromGeoCodeData(results, status){
+  updatePlaceNameFromGeoCodeData(results, status, type){
     this.geocoder_loading = false;
 
-        if(results.length > 0){
-          
-          let addressComponents = results[0].address_components;
-          
-          // construct name from street[1] + city[2] + state[3]
-          if(addressComponents && addressComponents.length>3){
-              this.placeName =  placeNameGenerator(addressComponents);
-          } else {
-            // use formated address
-            this.placeName = results[0].formatted_address;
-          }
+        if(results.length > 0) {
 
-          this.googlePlaceId = results[0].place_id;
+          results.some((res) => {
+            
+
+            let type1 = res.types.join('.');
+
+
+            if(type1 == type){
+
+              console.log('res',  res.geometry.location.lat(),  res.geometry.location.lng());
+
+
+              this.marker_lat = res.geometry.location.lat();
+              this.marker_lng = res.geometry.location.lng();
+
+              let addressComponents = res.address_components;
+              
+              // construct name from street[1] + city[2] + state[3]
+              if(addressComponents && addressComponents.length){
+                  this.placeName =  placeNameGenerator(addressComponents);
+              } else {
+                // use formated address
+                this.placeName = res.formatted_address;
+              }
+
+              //this.place2 = this.placeName;
+              //console.log('autocomplete', this.autocomplete, this.autocomplete.getPlace());
+              this.googlePlaceId = res.place_id;
+              
+              return true;
+
+            }
+          });
+
+          
 
         } else {
 

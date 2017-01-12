@@ -45,6 +45,7 @@ import { GMapsService } from './shared/services/gmaps.service';
 
 import {TripService} from './trip/services/trip.services'
 
+import { Ng2CloudinaryModule } from 'ng2-cloudinary';
 
 // https://maps.googleapis.com/maps/api/staticmap?size=1400x1400&path=weight:3|color:orange|enc:polyline_data&key=AIzaSyD7SD0fOQEgd2o7M0TNBz7bs2UMbEJLJ3g
 
@@ -90,6 +91,7 @@ type StoreType = {
 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBz-SSRjmp0v2Rfymw9xDm-WXYWbABcZ7M',
+      language:'en',
       libraries: ['places']
     }),
 
@@ -105,6 +107,8 @@ type StoreType = {
     DragulaModule,
     ResizableModule,
     SharedModule,
+
+    Ng2CloudinaryModule,
     
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection

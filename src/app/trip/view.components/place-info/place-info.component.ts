@@ -32,6 +32,8 @@ import {TripService} from '../../services/trip.services';
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
+import {CloudinaryImageComponent} from 'ng2-cloudinary';
+
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
@@ -57,6 +59,11 @@ export class PlaceInfoViewComponent {
   //public fromPlace : any;
   public toPlace : any;
 
+  public info : any;
+
+  public imageHeight = 0;
+  public imageWidth = 0;
+
   public style: any = {
     height: '100px',
     lineHeight: '300px'
@@ -76,6 +83,7 @@ export class PlaceInfoViewComponent {
 
   public ngAfterViewInit() {
     //$(this._el.nativeElement.ownerDocument).foundation();
+    
   }
   
   public ngOnChanges(changes: any){
@@ -96,8 +104,13 @@ export class PlaceInfoViewComponent {
     //this.fromPlace = this.place;
     this.toPlace = this.places[toIndex];
 
+    this.info = this.place.infoplace
+
+    console.log('this.place.infoplace', this.place)
    
     this.recountTime(this.place.stayover);
+
+    this.imageHeight = height;
     //console.log(this.index, this.place, this.places);
   }
 
@@ -143,6 +156,7 @@ export class PlaceInfoViewComponent {
     this.timerToShow = window.setTimeout(()=>{
       this.recountTime(totalMinutes);
       this.timerToShow = null;
+      this.imageHeight = event.rectangle.height;
     },20);
     
   }

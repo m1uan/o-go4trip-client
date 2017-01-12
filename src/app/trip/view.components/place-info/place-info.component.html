@@ -1,20 +1,21 @@
 <div >
-    
-    <div class="main-place-info"
-      [ngStyle]="style"
-        mwlResizable
-        [validateResize]="validate"
-        [resizeEdges]="{bottom: true}"
-        [enableGhostResize]="false"
-        (resizing)="onResizing($event)">
 
+<!--<ul class="clearing-thumbs" data-clearing>
+    <li  *ngFor="let photo of info.photos">
             
-            <span class="visiting">
+                <a><img src="https://www.bazos.cz/img/1/764/67778764.jpg?t=1479480974" /></a>
+            
+        <cl-image class="th [radius]" public-id="{{photo.cloudinary}}" cloud-name="miuan" ></cl-image>
+    </li>
+</ul>-->
+ 
+<div class="visit-title">
+    <span class="visiting">
                 <span *ngIf="index!=0">Exploring:</span>
                 <span *ngIf="index==0">Start in:</span>
             </span>
             <span class="place-name">
-                <span class="handle"><span *ngIf="index!=0">{{index}}.</span> {{place?.name}}</span>
+                <span class="handle"><span *ngIf="index!=0">{{index}}.</span> {{info?.name}}</span>
             </span>
             <span>({{hours}}h {{minutes}}min)</span>     
             <span class="delete" >
@@ -25,6 +26,29 @@
                     <span class="button tiny success" (click)="deleteActive=false">no</span>
                 </span>
             </span>
+            
+    </div>
+    <div class="main-place-info"
+      [ngStyle]="style"
+        mwlResizable
+        [validateResize]="validate"
+        [resizeEdges]="{bottom: true}"
+        [enableGhostResize]="false"
+        (resizing)="onResizing($event)">
+           
+           
+
+    <div class="image-container1  " >
+        <div class="place-image" *ngFor="let photo of info.photos; let idx = index">
+            <cl-image *ngIf="idx < 4" class="th [radius]" public-id="{{photo.cloudinary}}" crop="fill" gravity="center" width="500" height="{{imageHeight}}" cloud-name="miuan" ></cl-image>
+        </div>
+    </div>
+               
+    <div class="clearfix">
+    </div>
+            
+
+
         
     </div>
     

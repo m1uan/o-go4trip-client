@@ -1,7 +1,7 @@
 
 <div class="main-move-info" [ngStyle]="style" >
 
-    <a   href="https://www.google.cz/maps/dir/{{fromPlace.place.lat_round/1000}},{{fromPlace.place.lng_round/1000}}/{{toPlace?.place?.lat_round/1000}},{{toPlace?.place?.lng_round/1000}}" target="_new"  >
+    <a   href="https://www.google.cz/maps/dir/{{cachePlace.lat_round/1000}},{{cachePlace.lng_round/1000}}/{{toCachePlace?.lat_round/1000}},{{toCachePlace?.lng_round/1000}}" target="_new"  >
         <img class="move-image" [ngStyle]="imageStyle" src="{{serverURL}}/assets/gas/{{moves.cache.image_thumb_key}}" />
     </a>
     <span class="transport" >Transport:</span>    

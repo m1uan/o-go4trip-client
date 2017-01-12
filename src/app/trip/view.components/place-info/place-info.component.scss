@@ -2,8 +2,8 @@
 
 .main-place-info {
     background-color: $color-bg-place;
-      
-    margin: auto;
+    overflow: hidden;  
+    margin:auto;
 }
 
 .visiting {
@@ -39,4 +39,22 @@ h1{
 
 .delete-link {
     color:orangered;
+}
+
+.image-container {
+    width:100%;
+    overflow: hidden;
+}
+
+.place-image {
+    float:left;
+    width:24%;
+}
+
+.visit-title{
+    position:relative;
+    top:30px;
+    background-color:#000000;
+    opacity: 0.7;
+    color:white;
 }

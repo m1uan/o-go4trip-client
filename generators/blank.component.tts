@@ -26,6 +26,8 @@ import * as _ from 'lodash';
 import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 import {EviService} from '{{ parent }}shared/services/evi.service';
 
+import {CloudinaryImageComponent} from 'ng2-cloudinary';
+
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 

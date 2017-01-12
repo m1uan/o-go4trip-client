@@ -111,8 +111,8 @@ export class TripService {
             let indexPlace = this.places[index];
 
             this.evi.navigate(['/place', this.tripId, 'alternative', this.alternativeUuid, 'after', index, {
-                lat:indexPlace.place.lat_round/1000,
-                lng: indexPlace.place.lng_round/1000
+                lat: indexPlace.infoplace.place.lat_round/1000,
+                lng: indexPlace.infoplace.place.lng_round/1000
             }]);
 
         } else if(this.lastPlace && this.lastPlace.place){
@@ -121,8 +121,8 @@ export class TripService {
             // but show in locatin of lat lng of last place
 
             this.evi.navigate(['/place', this.tripId, 'alternative', this.alternativeUuid, 'new', {
-                lat:this.lastPlace.place.lat_round/1000,
-                lng: this.lastPlace.place.lng_round/1000
+                lat: this.lastPlace.infoplace.place.lat_round/1000,
+                lng: this.lastPlace.infoplace.place.lng_round/1000
             }]);
 
         } else {

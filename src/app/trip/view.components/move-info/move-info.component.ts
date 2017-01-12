@@ -60,6 +60,10 @@ export class MoveInfoViewComponent {
 
   toPlace : any = null;
 
+  info : any = null;
+
+  cachePlace : any = null;
+
   hours : number = 0;
   minutes: number = 0;
 
@@ -84,6 +88,11 @@ export class MoveInfoViewComponent {
   }
   
   public ngOnChanges(changes: any){
+    
+    
+
+    console.log(this.fromPlace);
+
     //console.log('ngOnChanges', this.place, this.places);
     for(let i = 0; i < this.places.length; i++){
       let place = this.places[i];
@@ -98,6 +107,17 @@ export class MoveInfoViewComponent {
         
       }
     }
+
+    this.info = this.fromPlace.infoplace;
+    if(this.info){
+      this.cachePlace = this.info.place;
+    }
+    
+    this.toInfo = this.toPlace.infoplace;
+    if(this.toInfo){
+      this.toCachePlace = this.toInfo.place;
+    }
+    
   }
 
   addStopOver(){
