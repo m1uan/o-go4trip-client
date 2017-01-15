@@ -69,6 +69,10 @@ export class PlaceInfoViewComponent {
     //lineHeight: '300px'
   };
 
+  public visitingStyle : any = {
+    marginTop:'-100px'
+  }
+
   public hours: number;
   public minutes: number;
   
@@ -110,7 +114,9 @@ export class PlaceInfoViewComponent {
    
     this.recountTime(this.place.stayover);
 
-    this.imageHeight = height;
+    this.imageHeight = height-50;
+
+    this.updateVisitorBar(height);
     //console.log(this.index, this.place, this.places);
   }
 
@@ -141,7 +147,8 @@ export class PlaceInfoViewComponent {
 
     let totalMinutes = Math.round(event.rectangle.height*2);
 
-    
+    this.imageHeight = event.rectangle.height-50;
+    this.updateVisitorBar(event.rectangle.height);
 
     if(this.timerToSave){
       clearTimeout(this.timerToSave);
@@ -156,9 +163,16 @@ export class PlaceInfoViewComponent {
     this.timerToShow = window.setTimeout(()=>{
       this.recountTime(totalMinutes);
       this.timerToShow = null;
-      this.imageHeight = event.rectangle.height;
+      
     },20);
+
     
+    
+    
+  }
+
+  updateVisitorBar(height){
+    this.visitingStyle.marginTop = '-' + (height -7) + 'px';
   }
 
   onDelete(){

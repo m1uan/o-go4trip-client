@@ -78,11 +78,11 @@ export class MoveInfoViewComponent {
     this.style.lineHeight = this.style.height;
     
     
-    let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_400,h_225,c_fill,g_center/'+ this.fromPlace.moves.cache.image_thumb_key;
+    let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_250,h_250,c_fill,g_center/'+ this.fromPlace.moves.cache.image_thumb_key;
     this.imageStyle = {
             backgroundImage : imageUrl,
-            width:  '404px',
-            height: Math.round(height+40) + "px",
+            width:  '250px',
+            height: Math.round(height+78) + "px",
             backgroundPosition: 'center',
             backgroundSize: 'crop'
         }
