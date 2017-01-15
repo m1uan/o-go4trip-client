@@ -76,10 +76,21 @@ export class MoveInfoViewComponent {
     let height = Math.round(this.moves.timetake/2);
     this.style.height = height + "px";
     this.style.lineHeight = this.style.height;
-    this.imageStyle.height = Math.round(height-10) + "px";
+    
+    
+    let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_400,h_225,c_fill,g_center/'+ this.fromPlace.moves.cache.image_thumb_key;
+    this.imageStyle = {
+            backgroundImage : imageUrl,
+            width:  '404px',
+            height: Math.round(height+40) + "px",
+            backgroundPosition: 'center',
+            backgroundSize: 'crop'
+        }
+    
 
     this.hours = Math.floor( this.moves.timetake /60);          
     this.minutes = this.moves.timetake % 60;
+
 
   }
 
@@ -89,9 +100,9 @@ export class MoveInfoViewComponent {
   
   public ngOnChanges(changes: any){
     
-    
+    let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_400,h_225,c_fill,g_center/'+ this.fromPlace;
 
-    console.log(this.fromPlace);
+    console.log('this.fromPlace', this.fromPlace);
 
     //console.log('ngOnChanges', this.place, this.places);
     for(let i = 0; i < this.places.length; i++){

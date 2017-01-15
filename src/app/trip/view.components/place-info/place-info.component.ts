@@ -66,7 +66,7 @@ export class PlaceInfoViewComponent {
 
   public style: any = {
     height: '100px',
-    lineHeight: '300px'
+    //lineHeight: '300px'
   };
 
   public hours: number;
@@ -87,13 +87,13 @@ export class PlaceInfoViewComponent {
   }
   
   public ngOnChanges(changes: any){
-    console.log('ngOnChanges', this.place);
+    
 
     let height = Math.round(this.place.stayover/2)
     let heightFromMinutes = height + 'px';
 
     this.style.height = heightFromMinutes;
-    this.style.lineHeight = heightFromMinutes;
+    //this.style.lineHeight = heightFromMinutes;
 
     let toIndex = this.index+1;
     if(toIndex == this.places.length){
@@ -129,7 +129,7 @@ export class PlaceInfoViewComponent {
 
   onResizing(event: ResizeEvent): void {
     this.style = {
-      lineHeight: `${event.rectangle.height}px`,
+      //lineHeight: `${event.rectangle.height}px`,
       height: `${event.rectangle.height}px`
     };
 

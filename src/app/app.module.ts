@@ -30,6 +30,7 @@ import {PlaceComponent} from './trip/components/place/';
 import {TripComponent} from './trip/components/trip/';
 import {TripListComponent} from './trip/components/list/';
 import {TimelineViewComponent} from './trip/view.components/timeline/';
+import {PhotosInfoViewComponent} from './trip/view.components/photos-info/';
 import {MoveInfoViewComponent} from './trip/view.components/move-info/';
 import {PlaceInfoViewComponent} from './trip/view.components/place-info/';
 
@@ -52,7 +53,8 @@ import { Ng2CloudinaryModule } from 'ng2-cloudinary';
 const PLACE_VIEWS = [
   TimelineViewComponent,
   MoveInfoViewComponent,
-  PlaceInfoViewComponent
+  PlaceInfoViewComponent,
+  PhotosInfoViewComponent
 ]
 
 

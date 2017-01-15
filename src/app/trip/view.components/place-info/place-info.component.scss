@@ -1,9 +1,25 @@
 @import '../../../app.component.scss';
 
+
+
+
 .main-place-info {
     background-color: $color-bg-place;
-    overflow: hidden;  
+    
     margin:auto;
+    padding-bottom: 10px;
+
+    table, td, tr, tbody, tbody td {
+        margin:0px;
+        padding:0px;
+        border: none;
+        
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
 }
 
 .visiting {
@@ -52,9 +68,10 @@ h1{
 }
 
 .visit-title{
-    position:relative;
-    top:30px;
+    margin-top:-34px;
+    margin-left:50px;
+    padding:8px;
     background-color:#000000;
-    opacity: 0.7;
+    opacity: 0.8;
     color:white;
 }

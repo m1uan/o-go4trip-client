@@ -2,7 +2,7 @@
 <div class="main-move-info" [ngStyle]="style" >
 
     <a   href="https://www.google.cz/maps/dir/{{cachePlace.lat_round/1000}},{{cachePlace.lng_round/1000}}/{{toCachePlace?.lat_round/1000}},{{toCachePlace?.lng_round/1000}}" target="_new"  >
-        <img class="move-image" [ngStyle]="imageStyle" src="{{serverURL}}/assets/gas/{{moves.cache.image_thumb_key}}" />
+        <div class="image" [ngStyle]="imageStyle" ></div>
     </a>
     <span class="transport" >Transport:</span>    
     <span>{{moves.km}} km</span>

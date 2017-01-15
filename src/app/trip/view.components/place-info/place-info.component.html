@@ -9,8 +9,17 @@
     </li>
 </ul>-->
  
-<div class="visit-title">
-    <span class="visiting">
+
+    <div class="main-place-info"
+      [ngStyle]="style"
+        mwlResizable
+        [validateResize]="validate"
+        [resizeEdges]="{bottom: true}"
+        [enableGhostResize]="false"
+        (resizing)="onResizing($event)">
+    <g4t-photos-info-view [cloudinary]="info.place.cloudinary" [photos]="info.photos" ></g4t-photos-info-view>
+    <div class="visit-title">
+        <span class="visiting">
                 <span *ngIf="index!=0">Exploring:</span>
                 <span *ngIf="index==0">Start in:</span>
             </span>
@@ -28,21 +37,15 @@
             </span>
             
     </div>
-    <div class="main-place-info"
-      [ngStyle]="style"
-        mwlResizable
-        [validateResize]="validate"
-        [resizeEdges]="{bottom: true}"
-        [enableGhostResize]="false"
-        (resizing)="onResizing($event)">
-           
-           
+    
+        
 
-    <div class="image-container1  " >
-        <div class="place-image" *ngFor="let photo of info.photos; let idx = index">
-            <cl-image *ngIf="idx < 4" class="th [radius]" public-id="{{photo.cloudinary}}" crop="fill" gravity="center" width="500" height="{{imageHeight}}" cloud-name="miuan" ></cl-image>
-        </div>
-    </div>
+        <!--<div class="place-image" *ngFor="let photo of info.photos; let idx = index">
+                <cl-image *ngIf="idx < 4" class="th [radius]" public-id="{{photo.cloudinary}}" crop="fill" gravity="center" width="500" height="{{imageHeight}}" cloud-name="miuan" ></cl-image>
+            </div>-->
+           
+        
+    
                
     <div class="clearfix">
     </div>
