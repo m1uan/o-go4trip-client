@@ -34,6 +34,8 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 
 import {CloudinaryImageComponent} from 'ng2-cloudinary';
 
+const imageFrameCompensateForBottomDepartingTitle = 48;
+
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
@@ -61,8 +63,8 @@ export class PlaceInfoViewComponent {
 
   public info : any;
 
-  public imageHeight = 0;
-  public imageWidth = 0;
+  public imageFrameHeight = 0;
+  
 
   public style: any = {
     height: '100px',
@@ -114,7 +116,7 @@ export class PlaceInfoViewComponent {
    
     this.recountTime(this.place.stayover);
 
-    this.imageHeight = height-50;
+    this.imageFrameHeight = height - imageFrameCompensateForBottomDepartingTitle;
 
     this.updateVisitorBar(height);
     //console.log(this.index, this.place, this.places);
@@ -147,7 +149,7 @@ export class PlaceInfoViewComponent {
 
     let totalMinutes = Math.round(event.rectangle.height*2);
 
-    this.imageHeight = event.rectangle.height-50;
+    this.imageFrameHeight = event.rectangle.height - imageFrameCompensateForBottomDepartingTitle;
     this.updateVisitorBar(event.rectangle.height);
 
     if(this.timerToSave){

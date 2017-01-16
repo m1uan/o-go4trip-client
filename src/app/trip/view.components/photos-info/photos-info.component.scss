@@ -1,0 +1,36 @@
+@import '../../../app.component.scss';
+
+
+
+.place-images {
+    height:90%;
+    overflow: hidden; 
+    background-color: black;
+    
+
+    table, td, tr, tbody, tbody td {
+        margin:0px;
+        padding:0px;
+        border: none;
+        
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+}
+.image {
+    float: right;
+    margin-right:2px;
+    margin-bottom:2px;
+}
+
+.map-image {
+    margin-right:5px;
+    margin-left:5px;
+}
+
+.clearfix {
+    clear: both;
+}

@@ -13,6 +13,7 @@
     <div class="main-place-info"
       [ngStyle]="style"
         mwlResizable
+        [resizeSnapGrid]="{bottom:1}"
         [validateResize]="validate"
         [resizeEdges]="{bottom: true}"
         [enableGhostResize]="false"
@@ -36,7 +37,7 @@
             </span>
             
     </div>
-    <g4t-photos-info-view class="photos" [cloudinary]="info.place.cloudinary" [photos]="info.photos" [height]="imageHeight" ></g4t-photos-info-view>
+    <g4t-photos-info-view class="photos" [cloudinary]="info.place.cloudinary" [photos]="info.photos" [height]="imageFrameHeight" ></g4t-photos-info-view>
     <div class="departing-title" >
         <span class="visiting">
                 <span >Departing at:</span>

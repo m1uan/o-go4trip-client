@@ -1,0 +1,31 @@
+
+
+
+<div class="place-images" id="place-images-{{cloudinary}}" [ngStyle]="mainStyle">
+    <div class="image map-image" [ngStyle]="mapPhotoStyle" ></div>
+    <div class="image" *ngFor="let photo of photos; let idx = index" [ngStyle]="photo" >
+    <div class="cleanfix"></div>
+</div>
+
+
+<!--<table>
+    <tbody>
+        <tr>
+            <td> 
+                
+                <cl-image public-id="{{cloudinary}}" crop="fill" gravity="center" width="500" height="200" cloud-name="miuan" ></cl-image>
+            </td>
+            <td *ngFor="let photo of photos; let idx = index"  >
+                <cl-image *ngIf="idx < 4" public-id="{{photo.cloudinary}}" crop="fill" gravity="center" width="200" height="200" cloud-name="miuan" ></cl-image>
+            </td>
+        </tr>
+        
+    </tbody>
+    
+
+</table>-->
+</div>
+
+        
+    
+

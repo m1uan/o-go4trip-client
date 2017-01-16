@@ -33,11 +33,20 @@
     }
 }
 
-.image {
+.image-frame{
     float:right;
     position:relative;
-    margin-top:-41px;
+    margin-top:-35px;
+    margin-right:0px;
     z-index:50000;
+    padding-right:4px;
+    padding-left:5px;
+    background-color:black;
+}
+.image {
+  
+
+    
 }
 
 a {

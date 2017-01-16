@@ -82,7 +82,7 @@ export class MoveInfoViewComponent {
     this.imageStyle = {
             backgroundImage : imageUrl,
             width:  '250px',
-            height: Math.round(height+78) + "px",
+            height: Math.round(height+70) + "px",
             backgroundPosition: 'center',
             backgroundSize: 'crop'
         }
