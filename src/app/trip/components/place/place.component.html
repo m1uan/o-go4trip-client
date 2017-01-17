@@ -3,7 +3,7 @@
 </div>
 
 
-<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDoubleClickZoom]="true" (mapClick)="onMapClick($event)">
+<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDoubleClickZoom]="true" (mapClick)="onMapClick($event)" [mapTypeControl]="true">
   
   <sebm-google-map-marker 
         [latitude]="lat || marker_lat" 

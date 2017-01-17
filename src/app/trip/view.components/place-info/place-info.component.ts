@@ -50,6 +50,8 @@ const imageFrameCompensateForBottomDepartingTitle = 48;
 })
 export class PlaceInfoViewComponent {
   @Output('onDelete') onDeleteEmitter = new EventEmitter();
+  @Output('onResize') onResizeEmitter = new EventEmitter();
+
   @Input('place') place : any;
   @Input('places') places: Array<any>;
   @Input('index') index : number;
@@ -64,6 +66,8 @@ export class PlaceInfoViewComponent {
   public info : any;
 
   public imageFrameHeight = 0;
+
+  public dateDeparting : number;
   
 
   public style: any = {
@@ -111,6 +115,8 @@ export class PlaceInfoViewComponent {
     this.toPlace = this.places[toIndex];
 
     this.info = this.place.infoplace
+
+    
 
     console.log('this.place.infoplace', this.place)
    
@@ -165,8 +171,11 @@ export class PlaceInfoViewComponent {
     this.timerToShow = window.setTimeout(()=>{
       this.recountTime(totalMinutes);
       this.timerToShow = null;
+      // recount all times arrives and depart
+      this.place.stayover = event.rectangle.height*2;
+      this.onResizeEmitter.emit();
       
-    },20);
+    },1);
 
     
     

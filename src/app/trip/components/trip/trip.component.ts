@@ -25,7 +25,7 @@
 //
 
 
-import { Component, ViewContainerRef, ElementRef } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, NgZone} from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ResizeEvent } from 'angular-resizable-element';
@@ -89,7 +89,7 @@ export class TripComponent {
    
   placeInfos : Array<PlaceInfo> = [] as Array<PlaceInfo>; 
 
-
+  public highlightPlaceId = null;
 
   lastPlace = { } as LngLat;
 
@@ -105,7 +105,8 @@ export class TripComponent {
                 private router : Router,
                 private _el: ElementRef, 
                 private _dragulaService : DragulaService, 
-                public tripService : TripService ) {
+                public tripService : TripService,
+                public zone: NgZone ) {
     
    
     // https://github.com/valor-software/ng2-dragula/issues/442
@@ -160,12 +161,17 @@ export class TripComponent {
         if(this.tripUuid){
             this.load(this.tripUuid, tripWayUuid);
         }
+
+        if(params['placeId']){
+          this.highlightPlaceId = params['placeId'];
+          
+        }
      });
 
   }
 
   public load(id, uuid){
-    console.log(id, uuid);
+
     this.tripService.loadTrip(id, uuid, (data) => this.updateTrip(data));
   }
 
@@ -181,7 +187,6 @@ export class TripComponent {
     let newIndex, newIndexCount = 0;
 
     target.childNodes.forEach((child, idx)=>{
-      console.log(child.id ? child.id.split('-').slice(1).join('-') : 'no id');
 
       // in childNodes are also childs what is not places
       // so take it by id name
@@ -199,24 +204,27 @@ export class TripComponent {
 
     this.tripService.placeChangeOrder(this.tripWayUuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
 
-    // do something else
-    console.log('onDrop', args, el.id, placeId, newIndex);
+
   }
 
   private onRemoveModel(args) {
     let [el, source] = args;
-    // do something else
-    console.log(args);
   }
   
   public onDelete(event){
-    console.log('public onDelete(event)', event);
     this.tripService.placeDelete(this.tripWayUuid, event, (data)=> this.updatePlaces(data.places));
   }
 
   public updateTrip(tripData){
+
+
     this.trip = tripData.trips;
     this.tripWayUuid = tripData.current.uuid;
+
+    // TODO:
+    
+    this.trip.dateStart = +moment().endOf('day').add('seconds',1);
+    
 
     this.updatePlaces(tripData.current.placesmoves);
 
@@ -239,22 +247,43 @@ export class TripComponent {
     this.places = places;
 
     this.updateTimeForAlternative();
+
+    if(this.highlightPlaceId){
+      window.setTimeout(()=>{
+          window.scrollTo(0, $("#" + this.highlightPlaceId + "-places-id").offset().top);
+      }, 300)
+    }
     
+    
+  }
+
+  public onAnyPlaceResize(){
+    this.zone.run(()=>{
+      this.updateTimeForAlternative();
+    });
   }
 
   public updateTimeForAlternative(){
 
 
+    
     this.totalMinutes = 0;
     this.totalKm = 0;
 
     this.places.forEach((place)=>{
+        
+        // place have to know when to start
+        place.dateArrive = this.trip.dateStart + this.totalMinutes * 60 * 1000;
+        place.dateDeparting = (place.dateArrive + (place.stayover*60*1000));
+
         this.totalMinutes += +place.stayover;
 
         if(place.moves){
           this.totalMinutes += place.moves.timetake;
           this.totalKm += place.moves.km;
         }
+
+        console.log('public updateTimeForAlternative()', place.dateArrive);
 
     })
 
@@ -319,7 +348,6 @@ export class TripComponent {
 
     way[actionName+'Active__'] = true;
 
-    console.log(actionName+'Active__', way[actionName+'Active__'])
 
     return true;
   }

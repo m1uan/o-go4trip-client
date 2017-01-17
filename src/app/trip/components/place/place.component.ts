@@ -155,6 +155,8 @@ export class PlaceComponent {
 
   ngOnInit() {
 
+    window.scrollTo(0, 0);
+
     const sub = this.route.params.subscribe(params => {
        this.tripId = params['tripid'];
        this.uuid = params['uuid'];
@@ -238,14 +240,14 @@ export class PlaceComponent {
     if(this.tripId && this.uuid){
 
         this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, this.googlePlaceId, (data)=>{
-          this.router.navigate(['/trip', this.tripId, 'way', this.uuid ]);
+          this.router.navigate(['/trip', this.tripId, 'way', this.uuid , {placeId: data.id}]);
         });
 
       } else {
         // in case we don't know id of trip and uuid of alternative
         // we have to create new trip
         this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, this.googlePlaceId, (data)=>{
-          this.router.navigate(['/trip', data.id ]);
+          this.router.navigate(['/trip', data.id, 'way', data.main ]);
         })
       }
   }

@@ -59,7 +59,7 @@
             <!--<div id="places" class="places">-->
             <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
                 
-                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="tripWayUuid" (onDelete)="onDelete($event)"></g4t-place-info-view>
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="tripWayUuid" (onDelete)="onDelete($event)" (onResize)="updateTimeForAlternative()"></g4t-place-info-view>
             </div>
             
         </div>

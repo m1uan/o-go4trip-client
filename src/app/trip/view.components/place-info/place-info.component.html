@@ -20,13 +20,14 @@
         (resizing)="onResizing($event)">
             <div class="visit-title" >
         <span class="visiting">
-                <span *ngIf="index!=0">Exploring:</span>
+            {{place.dateArrive | date:"EEE dd. MMM HH:mm"}}
+                <span *ngIf="index!=0"> Arrive to : </span>
                 <span *ngIf="index==0">Start in:</span>
             </span>
             <span class="place-name">
-                <span class="handle"><span *ngIf="index!=0">{{index}}.</span> {{info?.name}}</span>
+                <span class="handle"><span *ngIf="index!=0"></span> {{info?.name}}</span>
             </span>
-            <span>({{hours}}h {{minutes}}min)</span>     
+            <!--<span>({{hours}}h {{minutes}}min)</span>     -->
             <span class="delete" >
                 <a *ngIf="!deleteActive" class="delete-link" (click)="deleteActive=true">[delete]</a>
                 <span *ngIf="deleteActive">
@@ -40,11 +41,11 @@
     <g4t-photos-info-view class="photos" [cloudinary]="info.place.cloudinary" [photos]="info.photos" [height]="imageFrameHeight" ></g4t-photos-info-view>
     <div class="departing-title" >
         <span class="visiting">
-                <span >Departing at:</span>
+                <span >Departing at: {{place.dateDeparting | date:"EEE dd.MMM HH:mm"}}</span>
                
             </span>
             
-            <span>({{hours}}h {{minutes}}min)</span>     
+            <span>Exploring: {{hours}}h {{minutes}}min</span>     
             
             
     </div>
