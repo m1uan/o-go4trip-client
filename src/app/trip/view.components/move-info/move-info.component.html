@@ -8,7 +8,17 @@
     </a>
     <span class="transport" >Transport:</span>    
     <span>{{moves.km}} km</span>
-    <span>({{hours}}h {{minutes}}min)</span>           
+    <span>({{hours}}h {{minutes}}min)</span> 
+
+    <!-- 
+        TODO: select need bootstrap CSS
+        
+        https://github.com/softsimon/angular-2-dropdown-multiselect
+
+        <ss-multiselect-dropdown [options]="myOptions" [(ngModel)]="selectedOptions" (ngModelChange)="onChangeTransportRegulation($event)"></ss-multiselect-dropdown>
+    -->
+    
+
     <a class="add-stopover" (click)="tripService.onNewPlace(index)">[add stopover]</a>
     
 </div>

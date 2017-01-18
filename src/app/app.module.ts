@@ -48,6 +48,12 @@ import {TripService} from './trip/services/trip.services'
 
 import { Ng2CloudinaryModule } from 'ng2-cloudinary';
 
+import { MyDatePickerModule } from 'mydatepicker';
+
+import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+
+
+
 // https://maps.googleapis.com/maps/api/staticmap?size=1400x1400&path=weight:3|color:orange|enc:polyline_data&key=AIzaSyD7SD0fOQEgd2o7M0TNBz7bs2UMbEJLJ3g
 
 const PLACE_VIEWS = [
@@ -111,6 +117,10 @@ type StoreType = {
     SharedModule,
 
     Ng2CloudinaryModule,
+
+    MyDatePickerModule,
+
+    MultiselectDropdownModule
     
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection

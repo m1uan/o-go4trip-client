@@ -198,4 +198,11 @@ export class TripService {
         });
     }
 
+
+    public setTripReturnBack(tripUuid, tripWayUuid, returnBack, callback){
+        this.http.put('trips/'+tripUuid+ '/way/'+ tripWayUuid +'/returnBack', {returnBack}).subscribe((data)=>{
+            callback(data);
+        });
+    }
+
 }

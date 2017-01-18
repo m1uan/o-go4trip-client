@@ -31,6 +31,8 @@ import {TripService} from '../../services/trip.services';
 let $ = require('jquery/dist/jquery.js');
 let foundation = require('foundation-sites/dist/js/foundation.js');
 
+import {IMultiSelectOption} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
+
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
@@ -66,6 +68,12 @@ export class MoveInfoViewComponent {
 
   hours : number = 0;
   minutes: number = 0;
+
+  private selectedOptions: number[];
+  private myOptions: IMultiSelectOption[] = [
+      { id: 1, name: 'Option 1' },
+      { id: 2, name: 'Option 2' },
+  ];
 
   // TypeScript public modifiers
   constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, public tripService : TripService ) {
@@ -135,6 +143,10 @@ export class MoveInfoViewComponent {
 
   }
   
+
+  public onChangeTransportRegulation(data){
+
+  }
 
 
 }

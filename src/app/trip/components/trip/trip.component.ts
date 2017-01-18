@@ -98,6 +98,11 @@ export class TripComponent {
   alternativeHours = 0;
   alternativeMinutes = 0;
   totalKm = 0;
+
+  private myDatePickerOptions = {
+        // other options...
+        dateFormat: 'dd.mm.yyyy',
+    };
     
   // TypeScript public modifiers
   constructor(private evi : EviService, 
@@ -283,7 +288,6 @@ export class TripComponent {
           this.totalKm += place.moves.km;
         }
 
-        console.log('public updateTimeForAlternative()', place.dateArrive);
 
     })
 
@@ -390,6 +394,18 @@ export class TripComponent {
       //this.alternatives.push(alternative);
     });
   }
+
+  // dateChanged callback function called when the user select the date. This is mandatory callback
+    // in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.
+    onDateChanged(event: any) {
+        // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+    }
+    
+    tripReturnBackChange(event:any){
+      this.tripService.setTripReturnBack(this.trip.uuid, this.tripWayUuid, this.trip.returnBack, (data)=>{
+          this.updatePlaces(data.current.placesmoves);
+      });
+    }
 
 }
 
