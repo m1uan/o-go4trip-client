@@ -33,6 +33,7 @@ import {TimelineViewComponent} from './trip/view.components/timeline/';
 import {PhotosInfoViewComponent} from './trip/view.components/photos-info/';
 import {MoveInfoViewComponent} from './trip/view.components/move-info/';
 import {PlaceInfoViewComponent} from './trip/view.components/place-info/';
+import {TripWayItemComponent} from './trip/view.components/trip-way-item/';
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
@@ -60,7 +61,8 @@ const PLACE_VIEWS = [
   TimelineViewComponent,
   MoveInfoViewComponent,
   PlaceInfoViewComponent,
-  PhotosInfoViewComponent
+  PhotosInfoViewComponent,
+  TripWayItemComponent
 ]
 
 

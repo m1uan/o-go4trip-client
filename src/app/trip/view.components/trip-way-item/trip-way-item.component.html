@@ -1,0 +1,53 @@
+<div class="map-image-frame"  >
+    <div [ngStyle]="mapStyle" ></div>
+</div>
+<div>
+<span [ngClass]="{activeTripWay: tripWayUuid==way.uuid}">
+                
+                
+            <a (click)="setActiveTripWayEmitter.emit(way.uuid)">
+        
+                <h4> 
+                    <span *ngIf="trip.main_way_id == way.id">*</span> 
+                    <a (click)="setTripWayAsMainEmitter.emit(way, idx)" *ngIf="trip.main_way_id != way.id">O</a> 
+                        {{way.name}}
+                    <span *ngIf="trip.main_way_id == way.id">*</span>
+                </h4>
+                {{way.total_km}}km {{way.time_transport}} {{way.time_visit}} {{way.time_transport + way.time_visit}} 
+                
+            </a>
+            
+        </span>
+        
+
+        <!-- 
+            action list 
+        -->
+        <div *ngIf="!way.deleteActive__">
+            <a href="#" (click)="cloneAlternativeEmitter.emit(way.uuid)">clone</a> 
+            | <a href="#" (click)="cloneAlternativeEmitter.emit(way.uuid, true)">reverse</a> 
+            | <a href="#" (click)="createTripFromTripWayEmitter.emit(way.uuid)">new trip</a> 
+            
+            | <a (click)="onActivateTripWayAction(way, 'rename')">rename</a> 
+            <span *ngIf="trip.main_way_id != way.id">| <a  (click)="onActivateTripWayAction(way, 'delete')">delete</a> </span>
+        </div>
+        
+        <!-- 
+            delete action active
+        -->
+        <div *ngIf="way.deleteActive__">
+            realy delete it ? 
+                <span class="button tiny alert" (click)="doDeleteTripWayEmitter.next(way.uuid, idx)">yes</span>
+                <span class="button tiny success" (click)="way.deleteActive__=false">no</span>
+        </div>
+        
+        <!-- 
+            rename action active
+        -->
+        <div *ngIf="way.renameActive__">
+            <input [(ngModel)]="way.name">
+            <span class="button tiny alert" (click)="doUpdateTripWayEmitter.next(way, idx)">yes</span>
+            <span class="button tiny success" (click)="way.renameActive__=false">no</span>
+        </div>
+</div>
+<div style="clear:both;"></div>

@@ -333,28 +333,7 @@ export class TripComponent {
     return false;
   }
   
-  public onActivateTripWayAction(way, actionName){
-    if(actionName == 'rename'){
-      way.nameOrigin__ = way.name;
-    }
-
-
-    this.alternatives.forEach(wayEach=>{
-      wayEach.deleteActive__ = false;
-      wayEach.renameActive__ = false;
-      
-      // just for case the name was changed
-      if(wayEach.nameOrigin__){
-        wayEach.name = wayEach.nameOrigin__;
-        wayEach.nameOrigin__ = null;
-      }
-    })
-
-    way[actionName+'Active__'] = true;
-
-
-    return true;
-  }
+  
 
   public doDeleteTripWay(uuid, idx){
     // user is on trip way what is to deleted
