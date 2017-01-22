@@ -8,11 +8,26 @@
         <label>Trip start</label>
         <my-date-picker [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"></my-date-picker>
         
+        <!-- 
+            unfortunately the trip-way is not update when 
+            is changed cloudinary image, timeVisit or timeTransport
 
-        <g4t-trip-way-item class="alternatives" *ngFor="let way of alternatives; let idx = index" 
-                [allTripWays]="alternatives" 
-                [tripWay]="way" 
+            so it is add separately to invoke onNgChanges(...)
+
+            [cloudinary]="way.cloudinary"
+            [timeVisit]="way.time_visit"
+            [timeTransport]="way.time_transport"
+
+        -->
+        <g4t-trip-way-item class="alternatives" *ngFor="let way of ways; let idx = index" 
+                [allWays]="ways" 
+                [way]="way" 
                 [trip]="trip"
+        
+                [cloudinary]="way.cloudinary"
+                [timeVisit]="way.time_visit"
+                [timeTransport]="way.time_transport"
+        
                 (setActiveTripWay)="setActiveTripWay($event)"
                 (doDeleteTripWay)="doDeleteTripWay($event)"
                 (doUpdateTripWay)="doUpdateTripWay($event)"
@@ -36,7 +51,7 @@
             <!--<div id="places" class="places">-->
             <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
                 
-                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="tripWayUuid" (onDelete)="onDelete($event)" (onResize)="updateTimeForAlternative()"></g4t-place-info-view>
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="activeWayUuid" (onDelete)="onDelete($event)" (onResize)="updateTimeForActiveWay()"></g4t-place-info-view>
             </div>
             
         </div>

@@ -2,10 +2,11 @@
     <div [ngStyle]="mapStyle" ></div>
 </div>
 <div>
-<span [ngClass]="{activeTripWay: tripWayUuid==way.uuid}">
+    {{way.cloudinary}}
+    <span [ngClass]="{activeTripWay: tripWayUuid==way.uuid}">
                 
                 
-            <a (click)="setActiveTripWayEmitter.emit(way.uuid)">
+            <a (click)="setActiveTripWayEmitter.emit(way)">
         
                 <h4> 
                     <span *ngIf="trip.main_way_id == way.id">*</span> 
@@ -13,7 +14,7 @@
                         {{way.name}}
                     <span *ngIf="trip.main_way_id == way.id">*</span>
                 </h4>
-                {{way.total_km}}km {{way.time_transport}} {{way.time_visit}} {{way.time_transport + way.time_visit}} 
+                {{way.total_km}}km {{way.time_transport | g4tDuration}}T {{way.time_visit | g4tDuration}}V {{(way.time_transport + way.time_visit) | g4tDuration}}T+V
                 
             </a>
             

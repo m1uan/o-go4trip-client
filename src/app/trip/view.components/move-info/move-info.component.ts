@@ -110,7 +110,6 @@ export class MoveInfoViewComponent {
     
     let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_400,h_225,c_fill,g_center/'+ this.fromPlace;
 
-    console.log('this.fromPlace', this.fromPlace);
 
     //console.log('ngOnChanges', this.place, this.places);
     for(let i = 0; i < this.places.length; i++){

@@ -59,9 +59,13 @@ let foundation = require('foundation-sites/dist/js/foundation.js');
 })
 export class TripWayItemComponent {
 
-  @Input('allTripWays') public allTripWays;
-  @Input('tripWay') public way;
+  @Input('allWays') public allTripWays;
+  @Input('way') public way;
   @Input('trip') public trip;
+  @Input('activeWay') public activeWay;
+  @Input('cloudinary') public cloudinary;
+  @Input('timeVisit') public timeVisit;
+  @Input('timeTransport') public timeTransport;
 
   @Output('setActiveTripWay') public setActiveTripWayEmitter : EventEmitter = new EventEmitter();
   @Output('doDeleteTripWay') public doDeleteTripWayEmitter : EventEmitter = new EventEmitter();
@@ -84,7 +88,7 @@ export class TripWayItemComponent {
 
 
   public ngOnChanges(changes: any){
-    
+    console.log('ngOnChanges', this.way.cloudinary);
     let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_100,h_100,c_fill,g_center/'+ this.way.cloudinary;
 
     this.mapStyle= {

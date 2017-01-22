@@ -79,11 +79,13 @@ export class TripComponent {
 
   public trip = null;
 
-  public tripWayUuid = null;
+  public activeWayUuid = null;
+  public activeWayIndex = null;
+  public ways = [];
 
   public places = [];
 
-  public alternatives = [];
+  
   
   public style: Object = {};
    
@@ -156,15 +158,15 @@ export class TripComponent {
      const sub = this.route.params.subscribe(params => {
        this.tripUuid = params['id'];
        
-       let tripWayUuid = null;
+       let activeWayUuid = null;
        if(params['uuid']){
-          tripWayUuid = params['uuid'];
+          activeWayUuid = params['uuid'];
        } 
        
         // could happend the visitor of this page
         // is comming with empty id -> show just search box
         if(this.tripUuid){
-            this.load(this.tripUuid, tripWayUuid);
+            this.load(this.tripUuid, activeWayUuid);
         }
 
         if(params['placeId']){
@@ -207,7 +209,7 @@ export class TripComponent {
       
     })
 
-    this.tripService.placeChangeOrder(this.tripWayUuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
+    this.tripService.placeChangeOrder(this.activeWayUuid, placeId, newIndex, (data)=>this.updatePlaces(data.places));
 
 
   }
@@ -217,45 +219,57 @@ export class TripComponent {
   }
   
   public onDelete(event){
-    this.tripService.placeDelete(this.tripWayUuid, event, (data)=> this.updatePlaces(data.places));
+    this.tripService.placeDelete(this.activeWayUuid, event, (data)=> this.updatePlaces(data.places));
   }
 
   public updateTrip(tripData){
 
 
     this.trip = tripData.trips;
-    this.tripWayUuid = tripData.current.uuid;
+
+    
 
     // TODO:
     
     this.trip.dateStart = +moment().endOf('day').add('seconds',1);
     
+    
 
-    this.updatePlaces(tripData.current.placesmoves);
 
-
-    this.alternatives = [];
+    this.ways = [];
 
     // put mian to top of list
     tripData.alternatives.forEach(way=>{
       if(way.id == this.trip.main_way_id){
         // put at first
-        this.alternatives.splice(0, 0, way);
+        this.ways.splice(0, 0, way);
       } else {
-        this.alternatives.push(way);
+        this.ways.push(way);
       }
       
     })
+
+    // set active trip looking in this.ways
+    this.setActiveTripWay(tripData.current);
+    this.updatePlaces(tripData.current.placesmoves);
   }
 
   public updatePlaces(places){
     this.places = places;
 
-    this.updateTimeForAlternative();
+    this.updateTimeForActiveWay();
 
     if(this.highlightPlaceId){
+
       window.setTimeout(()=>{
-          window.scrollTo(0, $("#" + this.highlightPlaceId + "-places-id").offset().top);
+          // in some cases the id of place stays in url
+          // ond in object `this.highlightPlaceId`
+          // but we for examlple remove this place and element doesn't exist
+          let element = $("#" + this.highlightPlaceId + "-places-id");
+          if(element){
+            window.scrollTo(0, element.offset().top);
+          }
+          
       }, 300)
     }
     
@@ -264,16 +278,16 @@ export class TripComponent {
 
   public onAnyPlaceResize(){
     this.zone.run(()=>{
-      this.updateTimeForAlternative();
+      this.updateTimeForActiveWay();
     });
   }
 
-  public updateTimeForAlternative(){
-
-
+  public updateTimeForActiveWay(){
     
-    this.totalMinutes = 0;
-    this.totalKm = 0;
+
+    let totalKm = 0;
+    let timeVisit = 0;
+    let timeTransport = 0;
 
     this.places.forEach((place)=>{
         
@@ -281,27 +295,41 @@ export class TripComponent {
         place.dateArrive = this.trip.dateStart + this.totalMinutes * 60 * 1000;
         place.dateDeparting = (place.dateArrive + (place.stayover*60*1000));
 
-        this.totalMinutes += +place.stayover;
+        timeVisit += +place.stayover;
 
         if(place.moves){
-          this.totalMinutes += place.moves.timetake;
-          this.totalKm += place.moves.km;
+          console.log('updateTimeForActiveWay-place.moves',place.moves.timetake, place.moves.km);
+          timeTransport += place.moves.timetake;
+          totalKm += place.moves.km;
         }
 
 
     })
 
-    let totalHours = Math.floor(this.totalMinutes/60);
+    //let totalHours = Math.floor(this.totalMinutes/60);
     
-    this.alternativeDays = Math.floor(totalHours/24);
-    this.alternativeHours = totalHours % 24;
-    this.alternativeMinutes = this.totalMinutes %60;
+    let activeWay = this.ways[this.activeWayIndex];
+    activeWay.total_km = totalKm;
+    activeWay.time_transport = timeTransport;
+    activeWay.time_visit = timeVisit;
+
+    console.log('updateTimeForActiveWay', totalKm, activeWay);
   }
 
-  public setActiveTripWay(uuid){
+  public setActiveTripWay(way){
+    
+    this.activeWayUuid = way.uuid;
+    
+    this.ways.some((w, idx)=>{
+      
+      if(way.uuid == w.uuid){
+        
+        this.activeWayIndex = idx;
+        return true;
+      }
+    })
 
-    this.tripWayUuid = uuid;
-    this.loadAlternative(uuid);
+    this.loadAlternative(this.activeWayUuid);
 
     return false;
   }
@@ -317,7 +345,7 @@ export class TripComponent {
   public cloneAlternative(uuid, reverse = false){
     this.tripService.cloneAlternative(uuid, reverse, (tripWay)=>{
       
-      this.alternatives.push(tripWay);
+      this.ways.push(tripWay);
       
       this.setActiveTripWay(tripWay.uuid);
     });
@@ -338,9 +366,9 @@ export class TripComponent {
   public doDeleteTripWay(uuid, idx){
     // user is on trip way what is to deleted
     // please select another tripway
-    if(this.tripWayUuid == uuid){
+    if(this.activeWayUuid == uuid){
       // find main trip
-      this.alternatives.some((way)=>{
+      this.ways.some((way)=>{
         if(way.id == this.trip.main_way_id){
           this.setActiveTripWay(way.uuid);
           return true;
@@ -350,14 +378,14 @@ export class TripComponent {
     }
 
     this.tripService.deleteTripWay(uuid, (way)=>{
-      this.alternatives.splice(idx, 1);
+      this.ways.splice(idx, 1);
     });
   }
 
    public doUpdateTripWay(way, idx){
     this.tripService.updateTripWay(way, (updatedWay)=>{
-      this.alternatives.splice(idx, 1, updatedWay);
-      //this.alternatives.push(alternative);
+      this.ways.splice(idx, 1, updatedWay);
+      //this.ways.push(alternative);
     });
   }
 
@@ -365,26 +393,42 @@ export class TripComponent {
     this.tripService.setTripWayAsMain(way.uuid, (updatedWay)=>{
       this.trip.main_way_id = way.id;
 
-      this.alternatives.splice(idx, 1);
-      this.alternatives.splice(0, 0, way);
+      this.ways.splice(idx, 1);
+      this.ways.splice(0, 0, way);
 
       // switch to selected
       this.setActiveTripWay(way.uuid);
-      //this.alternatives.push(alternative);
+      //this.ways.push(alternative);
     });
   }
 
   // dateChanged callback function called when the user select the date. This is mandatory callback
-    // in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.
-    onDateChanged(event: any) {
-        // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+  // in this option. There are also optional inputFieldChanged and calendarViewChanged callbacks.
+  onDateChanged(event: any) {
+      // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+  }
+  
+  tripReturnBackChange(event:any){
+    this.tripService.setTripReturnBack(this.trip.uuid, this.activeWayUuid, this.trip.returnBack, (data)=>{
+        this.updatePlaces(data.current.placesmoves);
+        this.updateCurrentWay(data.current);
+    });
+  }
+  updatesNum = 1;
+
+  updateCurrentWay(newWay){
+
+    let oldWay = this.ways[this.activeWayIndex];
+
+    if(newWay){
+      for(let item in newWay){
+        this.ways[this.activeWayIndex][item] = newWay[item];
+
+      }
     }
-    
-    tripReturnBackChange(event:any){
-      this.tripService.setTripReturnBack(this.trip.uuid, this.tripWayUuid, this.trip.returnBack, (data)=>{
-          this.updatePlaces(data.current.placesmoves);
-      });
-    }
+
+    oldWay.name = oldWay.name + '' + this.updatesNum++;
+  }
 
 }
 

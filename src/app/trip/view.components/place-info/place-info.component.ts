@@ -118,7 +118,7 @@ export class PlaceInfoViewComponent {
 
     
 
-    console.log('this.place.infoplace', this.place)
+    
    
     this.recountTime(this.place.stayover);
 
@@ -173,6 +173,8 @@ export class PlaceInfoViewComponent {
       this.timerToShow = null;
       // recount all times arrives and depart
       this.place.stayover = event.rectangle.height*2;
+
+      console.log(this.place.stayover);
       this.onResizeEmitter.emit();
       
     },1);

@@ -96,7 +96,7 @@ export class PhotosInfoViewComponent {
     
 
     resizeDetector.listenTo(this._el.nativeElement.childNodes[1], (elem: HTMLElement) => {
-        console.log(elem.offsetWidth, elem.offsetHeight);
+        
         const mapWidth = 250; //Math.floor((elem.offsetWidth*0.3));
         const restWidth = elem.offsetWidth - mapWidth;
 
@@ -162,8 +162,6 @@ export class PhotosInfoViewComponent {
         }
 
     })
-
-    console.log('resizeDetector', resizeDetector);
   }
 
   ngDoCheck() { 
