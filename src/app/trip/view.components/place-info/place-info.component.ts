@@ -30,7 +30,6 @@ import {EviService} from '../../../shared/services/evi.service';
 import {TripService} from '../../services/trip.services';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 import {CloudinaryImageComponent} from 'ng2-cloudinary';
 
@@ -91,10 +90,7 @@ export class PlaceInfoViewComponent {
   
   }
 
-  public ngAfterViewInit() {
-    //$(this._el.nativeElement.ownerDocument).foundation();
-    
-  }
+
   
   public ngOnChanges(changes: any){
     

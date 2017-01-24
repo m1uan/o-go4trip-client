@@ -42,8 +42,9 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {EviService} from '../../../shared/services/evi.service';
 
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 @Component({
   // The selector is what angular internally uses
@@ -74,11 +75,26 @@ export class TripWayItemComponent {
   @Output('createTripFromTripWay') public createTripFromTripWayEmitter : EventEmitter = new EventEmitter();
   @Output('setTripWayAsMain') public setTripWayAsMainEmitter : EventEmitter = new EventEmitter();
 
+
+  public priceSettings = [
+    
+    {name: 'CZK total', currency: 1, config: 1},
+    {name: 'CZK per KM', currency: 1, config: 0},
+    
+    {name: 'EUR total', currency: 2, config: 1},
+    {name: 'EUR per KM', currency: 2, config: 0},
+    
+    {name: 'USD total', currency: 3, config: 1},
+    {name: 'USD per KM', currency: 3, config: 0},
+  ];
+
+  public currentSetting = this.priceSettings[0];
+
   public mapStyle = {
 
   }
     
-  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef ) {
+  constructor(private evi : EviService, private route : ActivatedRoute, private _el: ElementRef, public modal: Modal ) {
       
   }
 
@@ -98,6 +114,11 @@ export class TripWayItemComponent {
             backgroundPosition: 'center',
             backgroundSize: 'crop'
         }
+
+
+    this.priceSettings.forEach((ps)=>{
+
+    })
   }
 
 
@@ -125,6 +146,34 @@ export class TripWayItemComponent {
     return true;
   }
 
+  onTransportPrice(){
+    this.modal.alert()
+        .size('lg')
+        .showClose(true)
+        .title('A simple Alert style modal window')
+        .body(`
+            <h4>Alert is a classic (title/body/footer) 1 button modal window that 
+            does not block.</h4>
+            <b>Configuration:</b>
+            <ul>
+                <li>Non blocking (click anywhere outside to dismiss)</li>
+                <li>Size large</li>
+                <li>Dismissed with default keyboard key (ESC)</li>
+                <li>Close wth button click</li>
+                <li>HTML content</li>
+            </ul>`)
+        .open();
+  }
+
+  onCurrencyChange(settingIndex){
+    let oldCurrency = this.currentSetting.currency;
+    let oldConfig = this.currentSetting.config;
+
+    this.currentSetting = this.priceSettings[settingIndex];
+
+    // TODO: change currency in trip
+
+  }
 
 
 }

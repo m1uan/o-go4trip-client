@@ -45,7 +45,6 @@ import {EviService} from '../../../shared/services/evi.service';
 import {TripService} from '../../services/trip.services';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 interface PlaceInfo {
   places : Array<any>;
@@ -182,11 +181,6 @@ export class TripComponent {
     this.tripService.loadTrip(id, uuid, (data) => this.updateTrip(data));
   }
 
-
-  public ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-  }
-  
     
   private onDropModel(args, args2, args3) {
     let [name, el, target, source] = args;
@@ -224,17 +218,11 @@ export class TripComponent {
 
   public updateTrip(tripData){
 
-
     this.trip = tripData.trips;
-
-    
 
     // TODO:
     
     this.trip.dateStart = +moment().endOf('day').add('seconds',1);
-    
-    
-
 
     this.ways = [];
 

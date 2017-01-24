@@ -180,9 +180,12 @@ export class TripService {
     }
 
     public updateTripWay(way, callback = null){
+        console.log('updateTripWay(way', way)
         let wayForUpdate = {
             name : way.name,
-            desc : way.desc
+            desc : way.desc,
+            price_transport : way.price_transport,
+            price_transport_code : way.price_transport_code
         }
 
         this.http.put('trip/ways/'+way.uuid, wayForUpdate).subscribe((data)=>{

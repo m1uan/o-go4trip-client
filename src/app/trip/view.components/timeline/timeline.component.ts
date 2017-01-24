@@ -43,7 +43,6 @@ import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 import {EviService} from '../../../shared/services/evi.service';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 @Component({
   // The selector is what angular internally uses
@@ -100,9 +99,6 @@ export class TimelineViewComponent {
 
   }
 
-  public ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-  }
 
   public ngOnChanges(){
     // always adding week in adwance

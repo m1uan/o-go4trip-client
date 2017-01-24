@@ -29,7 +29,6 @@ import {EviService} from '{{ parent }}shared/services/evi.service';
 import {CloudinaryImageComponent} from 'ng2-cloudinary';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 @Component({
   // The selector is what angular internally uses
@@ -57,8 +56,6 @@ export class {{ name|title }}Component {
   
   }
 
-  public ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-  }
+
 
 }

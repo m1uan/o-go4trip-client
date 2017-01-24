@@ -5,7 +5,6 @@ import { Title } from './title';
 import { XLarge } from './x-large';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 
 
@@ -36,10 +35,7 @@ export class HomeComponent {
     // this.title.getData().subscribe(data => this.data = data);
   }
 
-  ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-    //console.log('$(this._el.nativeElement.ownerDocument).foundation()');
-  }
+
 
   submitState(value: string) {
     console.log('submitState', value);

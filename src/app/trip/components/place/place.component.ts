@@ -52,7 +52,6 @@ import { MapsAPILoader } from 'angular2-google-maps/core';
 import {TripService} from '../../services/trip.services'
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 declare var google: any;
 
@@ -252,9 +251,6 @@ export class PlaceComponent {
       }
   }
 
-  ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-  }
 
   onSearch(){
     

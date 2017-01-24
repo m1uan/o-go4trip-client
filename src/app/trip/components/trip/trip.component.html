@@ -1,6 +1,6 @@
 <div *ngIf="!trip">Loading ... </div>
 <div class="row" *ngIf="trip">
-      <div class="large-3 columns"  > 
+      <div class="col-lg-3"  > 
         <label >Trip name
             <input  type="text" placeholder="Visit Prague on Winter">
         </label>
@@ -42,7 +42,7 @@
         </label>
         <input id="checkbox1" type="checkbox" [(ngModel)]="trip.returnBack" (change)="tripReturnBackChange($event)"><label for="checkbox1">Automaticaly include way return</label>
     </div>
-    <div class="large-9 columns">
+    <div class="col-lg-9 ">
         <div class="timeline">
             <g4t-trip-timeline [totalMinutes]="totalMinutes"></g4t-trip-timeline>
         </div>

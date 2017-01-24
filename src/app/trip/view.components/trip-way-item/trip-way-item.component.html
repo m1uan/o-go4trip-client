@@ -15,7 +15,7 @@
                     <span *ngIf="trip.main_way_id == way.id">*</span>
                 </h4>
                 {{way.total_km}}km {{way.time_transport | g4tDuration}}T {{way.time_visit | g4tDuration}}V {{(way.time_transport + way.time_visit) | g4tDuration}}T+V
-                
+                {{way.price_transport}}CZK
             </a>
             
         </span>
@@ -24,12 +24,13 @@
         <!-- 
             action list 
         -->
-        <div *ngIf="!way.deleteActive__">
+        <div *ngIf="!way.deleteActive__ && !way.priceActive__">
             <a href="#" (click)="cloneAlternativeEmitter.emit(way.uuid)">clone</a> 
             | <a href="#" (click)="cloneAlternativeEmitter.emit(way.uuid, true)">reverse</a> 
             | <a href="#" (click)="createTripFromTripWayEmitter.emit(way.uuid)">new trip</a> 
             
             | <a (click)="onActivateTripWayAction(way, 'rename')">rename</a> 
+            | <a (click)="onActivateTripWayAction(way, 'price')">price</a>
             <span *ngIf="trip.main_way_id != way.id">| <a  (click)="onActivateTripWayAction(way, 'delete')">delete</a> </span>
         </div>
         
@@ -47,8 +48,51 @@
         -->
         <div *ngIf="way.renameActive__">
             <input [(ngModel)]="way.name">
-            <span class="button tiny alert" (click)="doUpdateTripWayEmitter.next(way, idx)">yes</span>
-            <span class="button tiny success" (click)="way.renameActive__=false">no</span>
+            <span class="button tiny alert" (click)="doUpdateTripWayEmitter.next(way, idx)">save</span>
+            <span class="button tiny success" (click)="way.renameActive__=false">cancel</span>
         </div>
+
+        <div *ngIf="way.priceActive__">
+
+            <div class="row-fluid">
+                <div class="col-lg-12">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-btn">
+                            
+                                <div class="btn-group" dropdown>
+                                    <button id="single-button" type="button" class="btn btn-sm btn-secondary" dropdownToggle>
+                                        {{currentSetting.name}}<span class="caret"></span>
+                                    </button>
+                                    <ul dropdownMenu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(0, 1, priceSettings[0].config)">{{priceSettings[0].name}}</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(1, 1, priceSettings[1].config)">{{priceSettings[1].name}}</a></li>
+                                        <li class="divider dropdown-divider"></li>
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(2, 2, priceSettings[2].config)">{{priceSettings[2].name}}</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(3, 2, priceSettings[3].config)">{{priceSettings[3].name}}</a></li>
+                                        <li class="divider dropdown-divider"></li>
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(4, 3, priceSettings[4].config)">{{priceSettings[4].name}}</a></li>
+                                        <li role="menuitem"><a class="dropdown-item" (click)="onCurrencyChange(5, 3, priceSettings[5].config)">{{priceSettings[5].name}}</a></li>
+                                    </ul>
+                                </div>
+
+
+                        </span>
+                        <input type="text" class="form-control" placeholder="amounth" [(ngModel)]="way.price_transport">
+                        <span class="input-group-btn">
+                            <button class="btn  btn-sm btn-danger" type="button" (click)="doUpdateTripWayEmitter.next(way, idx)">Save</button>
+                            <button class="btn  btn-sm btn-secondary" type="button" (click)="way.priceActive__=false">Cancel</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+           
+            
+        </div>
+
+        
+
+    
+
+
 </div>
 <div style="clear:both;"></div>

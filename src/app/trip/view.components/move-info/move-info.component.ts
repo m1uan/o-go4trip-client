@@ -29,7 +29,6 @@ import {EviService} from '../../../shared/services/evi.service';
 import {TripService} from '../../services/trip.services';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
 
 import {IMultiSelectOption} from 'angular-2-dropdown-multiselect/src/multiselect-dropdown';
 
@@ -102,10 +101,6 @@ export class MoveInfoViewComponent {
 
   }
 
-  public ngAfterViewInit() {
-    //$(this._el.nativeElement.ownerDocument).foundation();
-  }
-  
   public ngOnChanges(changes: any){
     
     let imageUrl = 'url(https://res.cloudinary.com/miuan/image/upload/w_400,h_225,c_fill,g_center/'+ this.fromPlace;

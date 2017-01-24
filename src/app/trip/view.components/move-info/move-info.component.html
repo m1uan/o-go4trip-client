@@ -1,24 +1,32 @@
 
 <div class="main-move-info" [ngStyle]="style" >
-
     <a   href="https://www.google.cz/maps/dir/{{cachePlace.lat_round/1000}},{{cachePlace.lng_round/1000}}/{{toCachePlace?.lat_round/1000}},{{toCachePlace?.lng_round/1000}}" target="_new"  >
-        <div class="image-frame">
-            <div class="image" [ngStyle]="imageStyle" ></div>
-        </div>
+            <div class="image-frame">
+                <div class="image" [ngStyle]="imageStyle" ></div>
+            </div>
     </a>
-    <span class="transport" >Transport:</span>    
-    <span>{{moves.km}} km</span>
-    <span>({{hours}}h {{minutes}}min)</span> 
-
+    <table>
+        <tr>
+            <td>
+        
+        <span class="transport" >Transport:</span>    
+        <span>{{moves.km}} km</span>
+        <span>({{hours}}h {{minutes}}min)</span> 
+        
+            </td><td>
     <!-- 
         TODO: select need bootstrap CSS
         
         https://github.com/softsimon/angular-2-dropdown-multiselect
 
-        <ss-multiselect-dropdown [options]="myOptions" [(ngModel)]="selectedOptions" (ngModelChange)="onChangeTransportRegulation($event)"></ss-multiselect-dropdown>
-    -->
+            <ss-multiselect-dropdown [options]="myOptions" [(ngModel)]="selectedOptions" (ngModelChange)="onChangeTransportRegulation($event)"></ss-multiselect-dropdown>
+       -->
+        </td>
+        <td>
+            <a class="add-stopover" (click)="tripService.onNewPlace(index)">[add stopover]</a>
+            </td>
+         </tr>
+    </table>
     
-
-    <a class="add-stopover" (click)="tripService.onNewPlace(index)">[add stopover]</a>
     
 </div>

@@ -35,10 +35,13 @@ import {MoveInfoViewComponent} from './trip/view.components/move-info/';
 import {PlaceInfoViewComponent} from './trip/view.components/place-info/';
 import {TripWayItemComponent} from './trip/view.components/trip-way-item/';
 
-import { ModalModule } from 'angular2-modal';
+import { ModalModule as Angular2ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { AlertModule } from 'ng2-bootstrap/alert';
+import { ModalModule } from 'ng2-bootstrap/modal';
+import { DropdownModule } from 'ng2-bootstrap/dropdown';
 
 import {SharedModule} from './shared/';
 
@@ -110,8 +113,13 @@ type StoreType = {
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    ModalModule.forRoot(),
+    
     BootstrapModalModule,
+    AlertModule.forRoot(),
+    ModalModule.forRoot(),
+    DropdownModule.forRoot(),
+
+    Angular2ModalModule.forRoot(),
     //wjNg2Grid,
     Ng2BootstrapModule,
     DragulaModule,

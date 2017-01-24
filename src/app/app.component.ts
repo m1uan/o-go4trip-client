@@ -1,12 +1,14 @@
 /*
  * Angular 2 decorators and services
  */
-import { Component, ViewEncapsulation, ElementRef, AfterViewInit  } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, AfterViewInit, ViewContainerRef   } from '@angular/core';
 
 import { AppState } from './app.service';
+import { Overlay } from 'angular2-modal';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 let $ = require('jquery/dist/jquery.js');
-let foundation = require('foundation-sites/dist/js/foundation.js');
+
 /*
  * App Component
  * Top Level Component
@@ -81,8 +83,10 @@ export class AppComponent  {
 
   constructor(
     private _el: ElementRef,
-    public appState: AppState) {
-
+    public appState: AppState,
+    public overlay: Overlay,
+    public vcRef: ViewContainerRef) {
+      overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -90,8 +94,7 @@ export class AppComponent  {
   }
 
   ngAfterViewInit() {
-    $(this._el.nativeElement.ownerDocument).foundation();
-    console.log('$(this._el.nativeElement.ownerDocument).foundation()');
+    
   }
 
 }
