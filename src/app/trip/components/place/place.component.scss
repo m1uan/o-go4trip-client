@@ -8,5 +8,25 @@
 
 .center-content{
   text-align: center;
-  width:300px;
+  width: 298px;
+  position: absolute;
+  z-index: 30000;
+  background-color:white;
+
+}
+
+
+.material-icons{
+  font-size:12px;
+  margin-right:2px;
+}
+
+.center-content-overflow{
+  width: 270px;
+  height: 265px;
+}
+
+.btn-group {
+  margin-top:10px;
+  margin-bottom:5px;
 }

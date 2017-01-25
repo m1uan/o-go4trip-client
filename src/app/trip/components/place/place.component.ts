@@ -135,6 +135,10 @@ export class PlaceComponent {
 
   public autocomplete = null;
 
+  public images = null;
+
+  public mapPhotoStyle = {};
+
   @ViewChild("googleMapInfoWindow") public googleMapInfoWindowView : ElementRef;
 
   @ViewChild("searchGoogle") public searchElementRef: ElementRef;
@@ -200,7 +204,8 @@ export class PlaceComponent {
           this.lat = this.marker_lat = place.geometry.location.lat();
           this.lng = this.marker_lng = place.geometry.location.lng();
           
-          this.placeName = this.placeName =  placeNameGenerator(place.address_components) || place.formatted_address;
+          this.placeName = placeNameGenerator(place.address_components) || place.formatted_address;
+          this.lookForImages(place);
 
           this.googlePlaceId = place.place_id;
         });
@@ -219,6 +224,31 @@ export class PlaceComponent {
       this.setCurrentPosition();
     }
     
+  }
+
+  private lookForImages(place){
+    this.images = null;
+    this.mapPhotoStyle = null;
+    let keyword = findType(place.address_components, 'locality');
+
+    console.log('place', keyword, place);
+    if(keyword){
+      
+      this._tripService.checkPhotosForKeywords([keyword], place.place_id, (images)=>{
+        console.log('checkPhotosForKeywords', images);
+        if(images && images.length > 0){
+          this.images = images;
+
+          this.mapPhotoStyle = {
+            backgroundImage : 'url(https://res.cloudinary.com/miuan/image/upload/w_293,h_165,c_fill,g_center/'+ images[0].cloudinary,
+            width:  '293px',
+            height: '165px',
+            backgroundPosition: 'center',
+            backgroundSize: 'crop'
+        }
+        }
+      });
+    }
   }
 
   private setCurrentPosition() {
@@ -324,6 +354,8 @@ export class PlaceComponent {
                 // use formated address
                 this.placeName = res.formatted_address;
               }
+
+              this.lookForImages(res);
 
               //this.place2 = this.placeName;
               //console.log('autocomplete', this.autocomplete, this.autocomplete.getPlace());

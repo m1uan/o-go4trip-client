@@ -12,6 +12,7 @@
         
        
        <sebm-google-map-info-window 
+       
           *ngIf="marker_lat && marker_lng"
             [disableAutoPan]="true"
             [isOpen]="true"
@@ -19,13 +20,42 @@
             [longitude]="marker_lng"
             (infoWindowClose)="onInfoWindowClose($event)"
             #googleMapInfoWindow>
+            
             <div class="center-content">
-              lat: {{marker_lat | round : 3}} lng: {{marker_lng | round :3 }}
-              <div class="preloader" *ngIf="geocoder_loading">Loading ...</div>
-              <div *ngIf="!geocoder_loading && placeName">  <button class="button blue" (click)="addPlaceToTripOrCreateNewTrip()">{{placeName}}</button> </div>
-              (click to button will add this place to your trip)
+              <!--lat: {{marker_lat | round : 3}} lng: {{marker_lng | round :3 }}-->
+              
+              
+
+              <div *ngIf="!geocoder_loading && placeName"> 
+                 <h4>{{placeName}}</h4>
+
+                <div *ngIf="mapPhotoStyle" class="image map-image" [ngStyle]="mapPhotoStyle" ></div>
+                <div *ngIf="!mapPhotoStyle">Loading images..</div>
+                
+                 
+                  
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(1)">
+                      <i class="material-icons">directions_walk</i>Walk
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(2)">
+                      <i class="material-icons">directions_bike</i>Bike
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(3)">
+                      <i class="material-icons">thumb_up</i>H-H
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(0)">
+                      <i class="material-icons">drive_eta</i>Car
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(4)">
+                      <i class="material-icons">airplanemode_active</i>Flight
+                    </button>
+                  </div> 
+              </div>
+              (choice transport to this place)
               googlePlaceId:{{googlePlaceId}}
             </div>
+            <div class="center-content-overflow"></div>
        </sebm-google-map-info-window >
      </sebm-google-map-marker>
 

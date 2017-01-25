@@ -208,4 +208,10 @@ export class TripService {
         });
     }
 
+    public checkPhotosForKeywords(keywords, googlePlaceId, callback){
+        this.http.post('trips/images', {keywords, googlePlaceId}).subscribe((data)=>{
+            callback(data);
+        });
+    }
+
 }
