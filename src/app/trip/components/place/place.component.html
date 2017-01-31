@@ -27,33 +27,37 @@
               
 
               <div *ngIf="!geocoder_loading && placeName"> 
-                 <h4>{{placeName}}</h4>
+                <h4>{{placeName}}</h4>
 
                 <div *ngIf="mapPhotoStyle" class="image map-image" [ngStyle]="mapPhotoStyle" ></div>
                 <div *ngIf="!mapPhotoStyle">Loading images..</div>
                 
-                 
-                  
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(1)">
-                      <i class="material-icons">directions_walk</i>Walk
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(2)">
-                      <i class="material-icons">directions_bike</i>Bike
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(3)">
-                      <i class="material-icons">thumb_up</i>H-H
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(0)">
-                      <i class="material-icons">drive_eta</i>Car
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(4)">
-                      <i class="material-icons">airplanemode_active</i>Flight
-                    </button>
-                  </div> 
+                 <div *ngIf="!tripId && !uuid">
+                   <button class="btn btn-primary btn-lg button-margin" (click)="addPlaceToTripOrCreateNewTrip(0)">Start my trip here!</button>
+                 </div>
+                 <div *ngIf="tripId && uuid">
+                    <div  class="btn-group button-margin" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(1)">
+                        <i class="material-icons">directions_walk</i>Walk
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(2)">
+                        <i class="material-icons">directions_bike</i>Bike
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(3)">
+                        <i class="material-icons">thumb_up</i>HH
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(0)">
+                        <i class="material-icons">drive_eta</i>Car
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" (click)="addPlaceToTripOrCreateNewTrip(4)">
+                        <i class="material-icons">airplanemode_active</i>Flight
+                      </button>
+                    </div> 
+                    (to add this place to your trip choice transport)
+                </div>
+                
               </div>
-              (choice transport to this place)
-              googlePlaceId:{{googlePlaceId}}
+              <!--googlePlaceId:{{googlePlaceId}}-->
             </div>
             <div class="center-content-overflow"></div>
        </sebm-google-map-info-window >

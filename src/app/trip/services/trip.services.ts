@@ -3,6 +3,19 @@ import { Injectable } from '@angular/core';
 import {EviService} from '../../shared/services/evi.service';
 import {EviHttpService} from '../../shared/services/evi.http.service';
 
+
+export const AVOID_TOLLS = (1 << 5);
+export const AVOID_HIGHWAYS = (1 << 6);
+export const AVOID_FERRIES = (1 << 7);
+export const TRANSPORT_MASK = 15; // 000000001111
+
+export const KEY_TRANSPORT_MODE_CAR = 0;
+export const KEY_TRANSPORT_MODE_WALK = 1;
+export const KEY_TRANSPORT_MODE_BIKE = 2;
+export const KEY_TRANSPORT_MODE_HH = 3;
+export const KEY_TRANSPORT_MODE_FLIGHT = 4;
+
+
 @Injectable()
 export class TripService {
     lastPlace : any = null;
@@ -15,7 +28,7 @@ export class TripService {
 
     }
 
-    createTrip(lat, lng, name, googlePlaceId, callback){
+    createTrip(lat, lng, name, googlePlaceId, transpartType, callback){
 
         this.http.post('trips', {lat, lng, name, googlePlaceId}).subscribe((data)=>{
             callback(data);
@@ -38,12 +51,20 @@ export class TripService {
          this.http.get('trips/').subscribe((data)=>callback(data));
     }
 
-    addPlaceToAlternative(lat, lng, name, uuid, index, googlePlaceId, callback = null){
+    addPlaceToAlternative(lat, lng, name, uuid, index, googlePlaceId, transport_type, callback = null){
+        let before = transport_type;
+        transport_type = transport_type + AVOID_TOLLS + AVOID_FERRIES + AVOID_HIGHWAYS;
+
+
+        console.log('transport_type = transport_type + (1 << 4):'+transport_type, before, transport_type & 7);
+
+
         let postData = {
             lat, 
             lng, 
             name,
-            googlePlaceId
+            googlePlaceId,
+            transport_type
         }
 
         if(!callback){

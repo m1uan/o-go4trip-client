@@ -12,8 +12,20 @@
         <span class="transport" >Transport:</span>    
         <span>{{moves.km}} km</span>
         <span>({{hours}}h {{minutes}}min)</span> 
-        
+        <span>
+            <span *ngIf="transport_mode==1"><i class="material-icons">directions_walk</i>Walk</span>
+            <span *ngIf="transport_mode==2"><i class="material-icons">directions_bike</i>Bike</span>
+            <span *ngIf="transport_mode==3"><i class="material-icons">thumb_up</i>HH</span>
+            <span *ngIf="transport_mode==0"><i class="material-icons">drive_eta</i>Car</span>
+            <span *ngIf="transport_mode==4"><i class="material-icons">airplanemode_active</i>Flight</span>
+            
+            [{{moves.transport_type}}:{{transport_mode}}]
+
+
+
+        </span>
             </td><td>
+
     <!-- 
         TODO: select need bootstrap CSS
         

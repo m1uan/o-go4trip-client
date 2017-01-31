@@ -26,7 +26,7 @@ import * as _ from 'lodash';
 import { AlertComponent } from 'ng2-bootstrap/ng2-bootstrap';
 import {EviService} from '../../../shared/services/evi.service';
 
-import {TripService} from '../../services/trip.services';
+import {TripService, TRANSPORT_MASK} from '../../services/trip.services';
 
 let $ = require('jquery/dist/jquery.js');
 
@@ -67,6 +67,8 @@ export class MoveInfoViewComponent {
 
   hours : number = 0;
   minutes: number = 0;
+
+  transport_mode = 0;
 
   private selectedOptions: number[];
   private myOptions: IMultiSelectOption[] = [
@@ -130,6 +132,9 @@ export class MoveInfoViewComponent {
     if(this.toInfo){
       this.toCachePlace = this.toInfo.place;
     }
+    
+
+    this.transport_mode = this.moves.transport_type & TRANSPORT_MASK;
     
   }
 

@@ -264,18 +264,18 @@ export class PlaceComponent {
 
 
 
-  addPlaceToTripOrCreateNewTrip(){
+  addPlaceToTripOrCreateNewTrip(transpartType){
     this.geocoder_loading = true;
     if(this.tripId && this.uuid){
 
-        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, this.googlePlaceId, (data)=>{
+        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.uuid, this.afterIndex, this.googlePlaceId, transpartType, (data)=>{
           this.router.navigate(['/trip', this.tripId, 'way', this.uuid , {placeId: data.id}]);
         });
 
       } else {
         // in case we don't know id of trip and uuid of alternative
         // we have to create new trip
-        this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, this.googlePlaceId, (data)=>{
+        this._tripService.createTrip(this.marker_lat, this.marker_lng, this.placeName, this.googlePlaceId, transpartType, (data)=>{
           this.router.navigate(['/trip', data.id, 'way', data.main ]);
         })
       }

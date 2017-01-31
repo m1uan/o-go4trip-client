@@ -98,7 +98,7 @@ export class PhotosInfoViewComponent {
 
         let photoMax = 5;
         let photoHight = elem.offsetHeight;
-        let photoWidth = Math.floor((restWidth)/5-4);
+        let photoWidth = Math.floor((restWidth)/5-5);
         
 
         const downloadWidth = 240; // http://size43.com/jqueryVideoTool.html
