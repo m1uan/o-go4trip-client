@@ -1,10 +1,40 @@
 <div class="form-group">
   <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" [ngModel]="place2" [formControl]="searchControl" #searchGoogle>
 </div>
+<div id="map" style="height:500px;"></div>
 
+<!--<div *ngFor="let place of places">
+  {{place | json }}
+  <hr>
+</div>-->
 
-<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDoubleClickZoom]="true" (mapClick)="onMapClick($event)" [mapTypeControl]="true">
+<!--<sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDoubleClickZoom]="true" (mapClick)="onMapClick($event)" [mapTypeControl]="true">
   
+  <sebm-google-map-marker 
+        *ngFor="let place of places"
+        [latitude]="place.infoplace.place.lat_round/1000" 
+        [longitude]="place.infoplace.place.lng_round/1000">
+  </sebm-google-map-marker>
+    <sebm-map-polygon [paths]="paths">
+    </sebm-map-polygon>-->
+  <!--<sebm-google-map-polyline *ngFor="let transport of transports" [editable]="true" >
+    
+         <sebm-google-map-polyline-point [latitude]="poly[0]" [longitude]="poly[1]" *ngFor="let poly of transport">
+         </sebm-google-map-polyline-point>
+     </sebm-google-map-polyline>-->
+
+ <!--<sebm-google-map-polyline 
+        *ngFor="let transport of transports" 
+        [editable]="true"
+        [polylineDraggable]="true"
+         >
+    
+         <sebm-google-map-polyline-point *ngIf="transport && transport.length>0 && transport[0] " (positionChanged)="lineDragEnd($event)" [latitude]="transport[0][0]" [longitude]="transport[0][1]" >
+         </sebm-google-map-polyline-point>
+         <sebm-google-map-polyline-point *ngIf="transport && transport.length>0 && transport[19]" (positionChanged)="lineDragEnd($event)" [latitude]="transport[19][0]" [longitude]="transport[19][1]" >
+         </sebm-google-map-polyline-point>
+     </sebm-google-map-polyline>
+
   <sebm-google-map-marker 
         [latitude]="lat || marker_lat" 
         [longitude]="lng || marker_lng"
@@ -22,7 +52,7 @@
             #googleMapInfoWindow>
             
             <div class="center-content">
-              <!--lat: {{marker_lat | round : 3}} lng: {{marker_lng | round :3 }}-->
+             
               
               
 
@@ -57,10 +87,10 @@
                 </div>
                 
               </div>
-              <!--googlePlaceId:{{googlePlaceId}}-->
+              
             </div>
             <div class="center-content-overflow"></div>
        </sebm-google-map-info-window >
      </sebm-google-map-marker>
 
-</sebm-google-map>
+</sebm-google-map>-->

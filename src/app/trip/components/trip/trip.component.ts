@@ -418,5 +418,9 @@ export class TripComponent {
     oldWay.name = oldWay.name + '' + this.updatesNum++;
   }
 
+  onPlacesChanged(places){
+    this.updatePlaces(places);
+  }
+
 }
 

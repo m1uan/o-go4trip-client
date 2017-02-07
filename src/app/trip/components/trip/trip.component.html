@@ -1,8 +1,14 @@
 <div *ngIf="!trip">Loading ... </div>
-<div class="row" *ngIf="trip">
+<div *ngIf="trip">
+    <g4t-map 
+        [places]="places" 
+        [wayUuid]="activeWayUuid" 
+        [trip]="trip"
+        (onPlacesChanged)="onPlacesChanged($event)"></g4t-map>
+<div class="row" >
       <div class="col-lg-3"  > 
         <label >Trip name
-            <input  type="text" placeholder="Visit Prague on Winter">
+            <input type="text" placeholder="Visit Prague on Winter">
         </label>
 
         <label>Trip start</label>
@@ -65,3 +71,4 @@
 
   
 <div>
+</div>
