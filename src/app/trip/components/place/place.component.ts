@@ -341,6 +341,17 @@ export class PlaceComponent {
 
 
         map.fitBounds(bounds);
+
+        if(this.places.length < 2){
+          setTimeout(()=>{
+            let placeLngLat = this.places[0].infoplace.place;
+
+            map.setCenter({lat: placeLngLat.lat_round/1000, lng: placeLngLat.lng_round/1000});
+            map.setZoom(10);
+          }, 100)
+        }
+        
+        
         // Add a listener for the click event
         //map.addListener('click', this.addLatLng);
       }

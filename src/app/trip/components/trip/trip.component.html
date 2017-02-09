@@ -1,13 +1,37 @@
 <div *ngIf="!trip">Loading ... </div>
 <div *ngIf="trip">
-    <g4t-map 
-        [places]="places" 
-        [wayUuid]="activeWayUuid" 
-        [trip]="trip"
-        (onPlacesChanged)="onPlacesChanged($event)"></g4t-map>
-<div class="row" >
-      <div class="col-lg-3"  > 
-        <label >Trip name
+    
+    <div class="row" >
+      <div class="col-lg-3 places-info" style="height:500px;" > 
+        <div class="timeline">
+            <g4t-trip-timeline [totalMinutes]="totalMinutes"></g4t-trip-timeline>
+        </div>
+            
+        <div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
+            <!--<div id="places" class="places">-->
+            <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
+                
+                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="activeWayUuid" (onDelete)="onDelete($event)" (onResize)="updateTimeForActiveWay()"></g4t-place-info-view>
+            </div>
+            
+        </div>
+        <div class="clearfix">
+            <div class="button" (click)="tripService.onNewPlace()">Add place</div>
+            
+        </div>
+    </div>
+    <div class="col-lg-9 ">
+        <g4t-map 
+            [places]="places" 
+            [wayUuid]="activeWayUuid" 
+            [trip]="trip"
+            (onPlacesChanged)="onPlacesChanged($event)"></g4t-map>
+
+         
+    </div>
+    </div>
+
+    <label >Trip name
             <input type="text" placeholder="Visit Prague on Winter">
         </label>
 
@@ -47,28 +71,7 @@
             <textarea placeholder="What is the plan, who would like to take with you, ..." rows="17"></textarea>
         </label>
         <input id="checkbox1" type="checkbox" [(ngModel)]="trip.returnBack" (change)="tripReturnBackChange($event)"><label for="checkbox1">Automaticaly include way return</label>
-    </div>
-    <div class="col-lg-9 ">
-        <div class="timeline">
-            <g4t-trip-timeline [totalMinutes]="totalMinutes"></g4t-trip-timeline>
-        </div>
-            
-        <div id="places" class="places" [dragulaModel]="places" [dragula]='"bag"' >
-            <!--<div id="places" class="places">-->
-            <div *ngFor="let place of places;let idx = index" id="{{place.id}}-places-id" >
-                
-                <g4t-place-info-view  [place]="place" [places]="places" [index]="idx" [wayUuid]="activeWayUuid" (onDelete)="onDelete($event)" (onResize)="updateTimeForActiveWay()"></g4t-place-info-view>
-            </div>
-            
-        </div>
-        <div class="clearfix">
-            <div class="button" (click)="tripService.onNewPlace()">Add place</div>
-            
-        </div>
-
-         
-    </div>
-
+</div>
   
 <div>
 </div>
