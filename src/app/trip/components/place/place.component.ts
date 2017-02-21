@@ -25,7 +25,7 @@
 //
 
 
-import { Component, ViewContainerRef, ElementRef, ViewChild, NgZone, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewContainerRef, ElementRef, ViewChild, NgZone, Input, Output, EventEmitter, Observer } from '@angular/core';
 
 import { AppState } from '../app.service';
 
@@ -172,6 +172,8 @@ export class PlaceComponent {
 
   public searchControl: FormControl;
 
+  Observer map;
+
   // TypeScript public modifiers
   constructor(private evi : EviService, 
                 private route : ActivatedRoute, 
@@ -184,7 +186,8 @@ export class PlaceComponent {
       
   }
 
-    ngOnInit() {
+  public ngOnInit() {
+    console.log('ngOnInit()')
     // https://developers.google.com/maps/documentation/javascript/examples/polyline-complex
     
     
@@ -208,60 +211,19 @@ export class PlaceComponent {
     this.searchControl = new FormControl();
 
     // http://brianflove.com/2016/10/18/angular-2-google-maps-places-autocomplete/
-    this.mapsAPILoader.load().then((MAP) => {
-      this.initMap();
-
-
-
-      
-        // var flightPath = new google.maps.Polyline({
-          
-        //   geodesic: true,
-        //   strokeColor: '#FF0000',
-        //   strokeOpacity: 1.0,
-        //   strokeWeight: 2
-        // });
-
-
-
-      this.geocoder = new google.maps.Geocoder({
-        language: 'en'
+    
+    this.map = new Observable((observer)=>{
+      this.mapsAPILoader.load().then((MAP) => {
+        console.log('this.mapsAPILoader.load().then((MAP) => {');
+        this.initMap();
+        this.afterInitMap();
+        observer.next();
       });
+    }).subscribe(()=>{});
 
-      
-      
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        //  types: ["address"]
-        language: 'en'
-      });
-      
-      
 
-      autocomplete.addListener("place_changed", () => {
-        //get the place result
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-        // for some reason the zone doesn't handle changes 
-        // when they komming from google
-
-        this.zone.run(()=>{
-        //set latitude and longitude
-          this.lat = this.marker_lat = place.geometry.location.lat();
-          this.lng = this.marker_lng = place.geometry.location.lng();
-          
-          this.placeName = placeNameGenerator(place.address_components) || place.formatted_address;
-          this.lookForImages(place);
-
-          this.googlePlaceId = place.place_id;
-        });
-
-        
-        
-      });
-
-      this.autocomplete = autocomplete;
-
-    });
+    
     
     // just in case the lat and lng was not set
     // put the current location
@@ -271,7 +233,7 @@ export class PlaceComponent {
     
   }
 
-  ngOnChanges (){
+  public ngOnChanges (){
     this.transports = [];
     console.log('ngOnChange:' + this.places.length, polyline, this.places)
     if(!this.places || this.places.length < 1){
@@ -298,46 +260,58 @@ export class PlaceComponent {
     }
 
     console.log('this.trip && this.way'+this.tripId, this.trip, this.wayUuid)
+
+    if(this.map && map){
+      this.showWayOnMap();
+      // this.map.subscribe(()=>{
+      //   //
+      // });
+    }
+    
   }
 
- initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          
-        });
+ public initMap() {
+    console.log('initMap()');
+    
+    map = new google.maps.Map(document.getElementById('map'), {
+      
+    });
 
-        map.addListener('click', (clickevent)=>{
-          console.log('event - click', clickevent, clickevent.latLng)
-          this.onMapClick(clickevent.latLng);
-        });
-
-
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'sandstone rock formation in the southern part of the '+
-            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-            'south west of the nearest large town, Alice Springs; 450&#160;km '+
-            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-            'Aboriginal people of the area. It has many springs, waterholes, '+
-            'rock caves and ancient paintings. Uluru is listed as a World '+
-            'Heritage Site.</p>'+
-            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-            '(last visited June 22, 2009).</p>'+
-            '</div>'+
-            '</div>';
-
-        this.infoWindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+    map.addListener('click', (clickevent)=>{
+      console.log('event - click', clickevent, clickevent.latLng)
+      this.onMapClick(clickevent.latLng);
+    });
 
 
-        let bounds = this.showWayOnMap();
+    var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+        '<div id="bodyContent">'+
+        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+        'sandstone rock formation in the southern part of the '+
+        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+        'south west of the nearest large town, Alice Springs; 450&#160;km '+
+        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+        'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+        'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+        'Aboriginal people of the area. It has many springs, waterholes, '+
+        'rock caves and ancient paintings. Uluru is listed as a World '+
+        'Heritage Site.</p>'+
+        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+        'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+        '(last visited June 22, 2009).</p>'+
+        '</div>'+
+        '</div>';
+
+    this.infoWindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+
+    
+    
+    let bounds = this.showWayOnMap();
 
 
         map.fitBounds(bounds);
@@ -350,16 +324,55 @@ export class PlaceComponent {
             map.setZoom(10);
           }, 100)
         }
-        
-        
         // Add a listener for the click event
         //map.addListener('click', this.addLatLng);
-      }
+  }
+
+  
+  public afterInitMap(){
+    console.log('afterInitMap()');
+
+    this.geocoder = new google.maps.Geocoder({
+        language: 'en'
+      });
+
+            
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        //  types: ["address"]
+        language: 'en'
+      });
+      
+      
+      autocomplete.addListener("place_changed", () => {
+        //get the place result
+        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+        // for some reason the zone doesn't handle changes 
+        // when they komming from google
+
+        this.zone.run(()=>{
+        //set latitude and longitude
+          this.lat = this.marker_lat = place.geometry.location.lat();
+          this.lng = this.marker_lng = place.geometry.location.lng();
+          
+          this.placeName = placeNameGenerator(place.address_components) || place.formatted_address;
+          this.lookForImages(place);
+
+          this.googlePlaceId = place.place_id;
+        });
+
+        
+        
+      });
+
+      this.autocomplete = autocomplete;
+  }
 
   /**
    * show transport data on map
    */
   public showWayOnMap(){
+    
     var flightPlanCoordinates = [];
 
     var bounds = new google.maps.LatLngBounds();
@@ -368,6 +381,7 @@ export class PlaceComponent {
       console.log('sadfsdfsda', transport[0][0], transport[0][1]);
       transport.forEach((p, pointIndex)=>{
         let latlng = new google.maps.LatLng(p[0], p[1]);
+        latlng.transport = transport;
 
 
         if(pointIndex == 0 || (pointIndex == transport.length-1 && transportIndex == this.transports.length-1)){
@@ -384,6 +398,8 @@ export class PlaceComponent {
       
     });
 
+    console.log('public showWayOnMap() this.flightPath', this.flightPath);
+    
     if(this.flightPath){
       this.flightPath.setMap(null);
       this.flightPath = null;
@@ -399,7 +415,7 @@ export class PlaceComponent {
 
     //http://stackoverflow.com/questions/15693077/event-handler-for-editing-a-google-maps-polyline
     //google.maps.event.addListener(this.flightPath, "dragend", (event, event2)=>{this.getPath(event, event2)});
-    // google.maps.event.addListener(this.flightPath.getPath(), "insert_at", (event, event2)=>this.getPath(event, event2));
+    google.maps.event.addListener(this.flightPath.getPath(), "insert_at", (event, event2)=>this.getPath(event, event2));
     // google.maps.event.addListener(this.flightPath.getPath(), "remove_at", (event, event2)=>this.getPath(event, event2));
     google.maps.event.addListener(this.flightPath.getPath(), "set_at", (event, event2)=>this.getPath(event, event2));
 
@@ -408,8 +424,67 @@ export class PlaceComponent {
     return bounds;
   }    
 
-  getPath(event, event2) {
-    console.log('draged++++++++++++++',event, this.flightPath, this.flightPath.getPath())
+  public getGeoCodeByLocation(latlng){
+
+    let location = {
+      'location': {
+          lat: latlng.lat,
+          lng : latlng.lng
+      },'language' : 'en'
+    };
+
+    return new Observable<string>((observer)=>{
+      this.geocoder.geocode(location, (results, status) => {
+        this.placeName = null;
+
+        this.zone.run(()=>{
+          this.updatePlaceNameFromGeoCodeData(results, status, 'locality.political');
+          if(!this.placeName){
+            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_2.political');
+          }
+          if(!this.placeName){
+            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_1.political');
+          }
+
+          observer.next(location);
+        })
+
+        console.log('results,status', results, status);
+      });
+
+      
+    })
+    
+  }
+
+  public getPath(indexOfPath, event2) {
+    let flightpath = this.flightPath.getPath();
+    let b = flightpath.b[indexOfPath];
+    
+    let placeIndex = 0;
+
+    let total = 0;
+    this.transports.some((transport, transportIndex)=>{
+      total += transport.length;
+      if(total > indexOfPath){
+        placeIndex = transportIndex;
+        return true;
+      }
+    });
+
+    console.log('draged++++++++++++++', placeIndex, indexOfPath, b.lat(), b.lng());
+
+    this.marker_lat = b.lat();
+    this.marker_lng = b.lng();
+
+    this.getGeoCodeByLocation({lat: b.lat(), lng: b.lng()}).subscribe(()=>{
+      
+      let placeMoveType = this.places[placeIndex].moves.transport_type;
+      
+      this.addPlaceToTripOrCreateNewTrip(placeMoveType, placeIndex);
+    })
+
+
     //  var path = flightPath.getPath();
     //  var len = path.getLength();
     //  var coordStr = "";
@@ -475,19 +550,30 @@ export class PlaceComponent {
     }
   }
 
+  closeInfoWindowAndMarker(){
+    if(this.infoWindow){
+      this.infoWindow.close();
+    }
 
+    if(this.infoWindowMarker){
+      this.infoWindowMarker.setMap(null);
+      this.infoWindowMarker = null;
+    }
+  }
 
-  addPlaceToTripOrCreateNewTrip(transpartType){
+  addPlaceToTripOrCreateNewTrip(transpartType, afterIndex = this.afterIndex){
     this.geocoder_loading = true;
     if(this.tripId && this.wayUuid){
 
-        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.wayUuid, this.afterIndex, this.googlePlaceId, transpartType, (data)=>{
+        this._tripService.addPlaceToAlternative(this.marker_lat, this.marker_lng, this.placeName, this.wayUuid, afterIndex, this.googlePlaceId, transpartType, (data)=>{
           //this.router.navigate(['/trip', this.tripId, 'way', this.wayUuid , {placeId: data.id}]);
           console.log('this.onPlacesChangedEmitter.emit(data.places);', data.places)
           this.onPlacesChangedEmitter.emit(data.places);
           this.places = data.places;
           this.ngOnChanges();
-          this.showWayOnMap();
+          
+
+          this.closeInfoWindowAndMarker();
         });
 
       } else {
@@ -507,7 +593,7 @@ export class PlaceComponent {
 
   place2 = '';
 
-  onMapClick(data){
+  public onMapClick(data){
     
 
     //this.googleMapInfoWindowView.open();
@@ -520,33 +606,13 @@ export class PlaceComponent {
     this.marker_lat = data.lat();
     this.marker_lng = data.lng();
 
-    let location = {
-      'location': {
-          lat: this.marker_lat,
-          lng : this.marker_lng
-      },'language' : 'en'
-    };
+    let loc = {lat: this.marker_lat, lng : this.marker_lng };
+    this.getGeoCodeByLocation(loc).subscribe((location)=>{
+      console.log('this.createInfoWindow(location)', location)
+      this.createInfoWindow(loc);
+    })
 
-    this.geocoder.geocode(location, (results, status) => {
-        this.placeName = null;
 
-        this.zone.run(()=>{
-          this.updatePlaceNameFromGeoCodeData(results, status, 'locality.political');
-          if(!this.placeName){
-            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_2.political');
-          }
-          if(!this.placeName){
-            this.updatePlaceNameFromGeoCodeData(results, status, 'administrative_area_level_1.political');
-          }
-
-        })
-
-        console.log('results,status', results, status);
-        
-        this.createInfoWindow(location.location);
-        
-
-    });
 
   }
 
